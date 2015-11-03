@@ -4,6 +4,7 @@ from PyQt4.QtCore import *
 import sys  
 import main
 import urlpage
+import http
 
 _encoding = QApplication.UnicodeUTF8
 
@@ -27,28 +28,26 @@ class GuiMain(QDialog,main.Ui_Form):
         self.AddListLeftUrl()
         
     def AddListLeftUrl(self):
-        self.urlpage = QTabWidget()        
-        self.urlpage.setObjectName(u"urlpage")
+        self.urlpage_wdg = QTabWidget()        
+        self.urlpage_wdg.setObjectName(u"urlpage")
 
-        UrlPage = urlpage.UrlPage()
-        self.urlpage_white = UrlPage.tbwhite
-        self.urlpage_black = UrlPage.tbblack
-        self.urlpage.addTab(UrlPage.tbwhite, u"白名单")
-        self.urlpage.addTab(UrlPage.tbblack, u"黑名单")
+        self.urlpage = urlpage.UrlPage()
+        self.urlpage_wdg.addTab(self.urlpage.tbwhite, u"白名单")
+        self.urlpage_wdg.addTab(self.urlpage.tbblack, u"黑名单")
 
         # 设置列表tabWidget中的值
-        self.SetItemUrlWhite(UrlPage.urlpage_white_tableWidget)
-        self.SetItemUrlBlack(UrlPage.urlpage_black_tableWidget)
+        self.SetItemUrlWhite(self.urlpage.urlpage_white_tableWidget, 0, 10)
+        self.SetItemUrlBlack(self.urlpage.urlpage_black_tableWidget, 0, 10)
 
-        self.frame_mid_right.addWidget(self.urlpage)
+        self.frame_mid_right.addWidget(self.urlpage_wdg)
 
         # 消息处理
-        self.connect(UrlPage.urlpage_white_add_btn, SIGNAL("clicked()"), self.UrlPageWhiteAdd)
-        self.connect(UrlPage.urlpage_white_del_btn, SIGNAL("clicked()"), self.UrlPageWhiteDel)
-        self.connect(UrlPage.urlpage_white_firstpage_btn, SIGNAL("clicked()"), self.UrlPageWhiteFirstPage)
-        self.connect(UrlPage.urlpage_white_prev_btn, SIGNAL("clicked()"), self.UrlPageWhitePrevPage)
-        self.connect(UrlPage.urlpage_white_next_btn, SIGNAL("clicked()"), self.UrlPageWhiteNextPage)
-        self.connect(UrlPage.urlpage_white_ok_btn, SIGNAL("clicked()"), self.UrlPageWhiteJump)
+        self.connect(self.urlpage.urlpage_white_add_btn, SIGNAL("clicked()"), self.UrlPageWhiteAdd)
+        self.connect(self.urlpage.urlpage_white_del_btn, SIGNAL("clicked()"), self.UrlPageWhiteDel)
+        self.connect(self.urlpage.urlpage_white_firstpage_btn, SIGNAL("clicked()"), self.UrlPageWhiteFirstPage)
+        self.connect(self.urlpage.urlpage_white_prev_btn, SIGNAL("clicked()"), self.UrlPageWhitePrevPage)
+        self.connect(self.urlpage.urlpage_white_next_btn, SIGNAL("clicked()"), self.UrlPageWhiteNextPage)
+        self.connect(self.urlpage.urlpage_white_ok_btn, SIGNAL("clicked()"), self.UrlPageWhiteJump)
 
 
         
@@ -80,37 +79,86 @@ class GuiMain(QDialog,main.Ui_Form):
     def SetVersionBottom(self, version):
         self.label_bottom_version.setText(main._translate("Form", "版本 : " + version, None))
 
-    def SetItemUrlWhite(self, qlistwidget):
-        for i in range(0,5):            
-            newItem = QTableWidgetItem("www.baidu.com/%d" % (i))            
-            newItem.setTextAlignment(Qt.AlignCenter)
-            qlistwidget.setItem(i, 0, newItem)
+    def SetItemUrlWhite(self, qlistwidget, start, length):
+        url = "http://127.0.0.1:8080/url/white/getlist"
+        param = {'Start' : start, 'Length' : length}
+        ret = http.Post(url, param)
+        if ret['ErrStat'] == 0:
+            # 清空列表
+            for i in range(0, 10):
+                qlistwidget.setItem(i, 0, None)
+                qlistwidget.setItem(i, 1, None)
+                
+            # 添加列表
+            for i in range(0, len(ret['Lists'])):
+                newItem = QTableWidgetItem(ret['Lists'][i])
+                newItem.setTextAlignment(Qt.AlignCenter)
+                qlistwidget.setItem(i, 0, newItem)
 
-            newItemChkbox = QTableWidgetItem()
-            newItemChkbox.setCheckState(False)
-            newItemChkbox.setTextAlignment(Qt.AlignCenter)
-            qlistwidget.setItem(i, 1, newItemChkbox)
+                newItemChkbox = QTableWidgetItem()
+                newItemChkbox.setCheckState(False)
+                newItemChkbox.setTextAlignment(Qt.AlignCenter)
+                qlistwidget.setItem(i, 1, newItemChkbox)                
+        else:
+            QMessageBox.about(self, u"获取URL列表", u"错误:" + ret['ErrMsg'])
 
-    def SetItemUrlBlack(self, qlistwidget):
-        for i in range(0,5):            
-            newItem = QTableWidgetItem("www.black_baidu.com/%d" % (i))            
-            newItem.setTextAlignment(Qt.AlignCenter)
-            qlistwidget.setItem(i, 0, newItem)
+    def SetItemUrlBlack(self, qlistwidget, start, length):
+        url = "http://127.0.0.1:8080/url/black/getlist"
+        param = {'Start' : start, 'Length' : length}
+        ret = http.Post(url, param)
+        if ret['ErrStat'] == 0:
+            # 清空列表
+            for i in range(0, 10):
+                qlistwidget.setItem(i, 0, None)
+                qlistwidget.setItem(i, 1, None)
+                
+            # 添加列表
+            for i in range(0, len(ret['Lists'])):
+                newItem = QTableWidgetItem(ret['Lists'][i])
+                newItem.setTextAlignment(Qt.AlignCenter)
+                qlistwidget.setItem(i, 0, newItem)
 
-            newItemChkbox = QTableWidgetItem()
-            newItemChkbox.setCheckState(False)
-            newItemChkbox.setTextAlignment(Qt.AlignCenter)
-            qlistwidget.setItem(i, 1, newItemChkbox)
+                newItemChkbox = QTableWidgetItem()
+                newItemChkbox.setCheckState(False)
+                newItemChkbox.setTextAlignment(Qt.AlignCenter)
+                qlistwidget.setItem(i, 1, newItemChkbox)                
+        else:
+            QMessageBox.about(self, u"获取URL列表", u"错误:" + ret['ErrMsg'])
 
     def UrlPageWhiteAdd(self):
         dialog = urlpage.UrlAddDialg()
         dialog.setModal(False)  
         dialog.exec_()
-        
-        QMessageBox.about(self, u"获取的URL", dialog.inputurl)
+        url = "http://127.0.0.1:8080/url/white/add"
+        param = {'Url' : dialog.inputurl}
+        ret = http.Post(url, param)
+        if ret['ErrStat'] == 0:
+            #QMessageBox.about(self, u"添加URL", u"添加成功")
+            # 刷新列表
+            self.SetItemUrlWhite(self.urlpage.urlpage_white_tableWidget, 0, 10)
+        else:
+            QMessageBox.about(self, u"添加URL", u"添加失败:" + ret['ErrMsg'])
 
     def UrlPageWhiteDel(self):
-        QMessageBox.about(self, u"白名单", u"删除")
+        itemcnt = self.urlpage.urlpage_white_tableWidget.rowCount()
+        dellist = []
+
+        for i in range(0, itemcnt):
+            it = self.urlpage.urlpage_white_tableWidget.item(i, 1)
+            if it == None:
+                continue
+            chk = it.checkState()
+            if chk == 2: # 状态有0和2
+                dellist.append(self.urlpage.urlpage_white_tableWidget.item(i, 0).text())
+                
+        url = "http://127.0.0.1:8080/url/white/del"
+        for u in dellist:   
+            param = {'Url' : u}
+            ret = http.Post(url, param)
+            if ret['ErrStat'] != 0:
+                QMessageBox.about(self, u"删除URL", u"删除失败: %s\n" %(url) + ret['ErrMsg'])
+        # 刷新列表
+        self.SetItemUrlWhite(self.urlpage.urlpage_white_tableWidget, 0, 10)
 
     def UrlPageWhiteFirstPage(self):
         QMessageBox.about(self, u"白名单", u"首页")

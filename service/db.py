@@ -4,27 +4,180 @@
 import config
 import sqlite3
 import os
+import threading
+
+# 全局变量
+global GCONN    # sqlite连接
+global GCUR     # sqlite游标
+global GDEBUG   # 调试模式
+GMUTEX = threading.Lock() # 线程锁
+GCONN  = None
+GCUR   = None
+GDEBUG = True
 
 
 def Connect():
+    global GCONN
+    global GCUR
     cfg = config.ReadConfig()
     try:
         dbname = cfg.get("DataBase", "DbName")
-    except:
-        print "Err:config.get(DataBase, DbName)"
+    except Exception as e:
+        print ("[Error] config.get(DataBase, DbName)")
+        print (e.message)
         return None
     
     try:
-        con = sqlite3.connect(dbname)
-    except:
-        print "Err:sqlite3.connect(%s)" % (dbname)
-        return None
+        con = sqlite3.connect(dbname, check_same_thread = False)
+    except Exception as e:
+        print ("[Error] sqlite3.connect(%s)" % (dbname))
+        print (e.message)
+        return -1
 
-    return con
+    GCONN = con
+    GCUR = con.cursor()
+    return 0
+
     
 def Close(con):
-    con.close()
+    global GCONN
+    global GCUR
+    GCUR.close()
+    GCONN.close()
+
+
+# 执行一条语句
+def SqlExecute(sql):
+    global GCONN
+    global GCUR
+    global GDEBUG
+    if GDEBUG:
+        print ("[Debug] SqlExecute : %s" % (sql))
+    try:
+        GCUR.execute(sql)
+        GCONN.commit()
+    except Exception as e:
+        print ("[Error] SqlExecute : %s" % (sql))
+        print (e.message)
+        return (-1, "Failed:" + e.message)
+    return (0, "OK")
+
+
+# 执行一条查询语句并获取结果
+def SqlQuery(sql):
+    global GCONN
+    global GCUR
+    global GDEBUG
+    if GDEBUG:
+        print ("[Debug] SqlQuery : %s" % (sql))
+    try:
+        GCUR.execute(sql)
+        GCONN.commit()
+    except Exception as e:
+        print ("[Error] SqlQuery : %s" % (sql))
+        print (e.message)
+        return [-1, "Failed:" + e.message, None]
     
-#cn = Connect()
-#if cn != None:    
-#    Close(cn)
+    r = GCUR.fetchall()
+    return [0, "OK", r]
+
+
+# Url添加 t=0白名单 t=1黑名单
+def UrlAdd(url, t):
+    if t == 0:
+        sql = sql = 'insert into url (id, url, type) values (null, "%s", 0)' % (url)
+    else:
+        sql = sql = 'insert into url (id, url, type) values (null, "%s", 1)' % (url)
+        
+    ret = SqlExecute(sql)
+    return ret
+
+
+# Url删除 t=0白名单 t=1黑名单
+def UrlDel(url):
+    sql = sql = 'delete from url where url = "%s"' % (url)
+    ret = SqlExecute(sql)
+    return ret
+
+
+# Url查询 t=0白名单 t=1黑名单
+def UrlQuery(t, start, length):
+    retList = {
+         'ErrStat' : 0,
+         'ErrMsg'  : 'OK',
+         'Lists'   : [],
+         'Totle'   : 0,
+    }
+
+    # 获取总数量
+    if t == 0:
+        sql = 'select count(*) from url where type == 0'
+    else:
+        sql = 'select count(*) from url where type == 1'
+    ret = SqlQuery(sql)
+    if ret[0] != 0:
+        retList['ErrStat'] = ret[0]
+        retList['ErrMsg'] = ret[1]
+        return retList
+    retList['Totle'] = ret[2][0][0]
+    
+    # 查询当前条件数据
+    if t == 0:
+        sql = 'select url from url where type == 0 order by id desc limit %d, %d' % (start, length)
+    else:
+        sql = 'select url from url where type == 1 order by id desc limit %d, %d' % (start, length)
+    ret = SqlQuery(sql)
+    if ret[0] != 0:
+        retList['ErrStat'] = ret[0]
+        retList['ErrMsg'] = ret[1]
+        return retList
+    for u in ret[2]:
+        retList['Lists'].append(u[0])
+    return retList
+
+
+def CreateTb_Url():
+    global GCUR
+    global GDEBUG
+
+    # 创建url表 type:0-白 1-黑
+    sql = '''create table if not exists url (
+	id integer not null primary key, 
+	url char(128) unique,
+	type  integer
+    );'''
+
+    ret = SqlExecute(sql)
+    if ret[0] != 0 :
+        return ret
+
+    # 创建配置表
+    sql = '''create table if not exists config (
+	id integer not null primary key, 
+	url_white integer,
+	url_black integer
+    );'''
+    ret = SqlExecute(sql)
+    if ret[0] != 0 :
+        return ret
+
+    # 写入默认配置
+    sql = '''insert into config (id, url_white, url_black) values (1, 1, 0)'''
+    ret = SqlExecute(sql)
+    if ret[0] != 0 :
+        return ret
+    return ret
+
+if __name__ == "__main__":
+    cn = Connect()
+    CreateTb_Url()
+    UrlAdd("www.baidu.com", 0)
+    UrlAdd("www.baidu.com1", 0)
+    UrlAdd("www.baidu.com2", 0)
+    UrlAdd("www.baidu.com3", 0)
+    UrlAdd("www.baidu.com4", 0)
+    UrlDel("www.baidu.com")
+    ret = UrlQuery(0, 0, 2)
+    print ret
+    if cn != None:    
+        Close(cn)
