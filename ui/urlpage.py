@@ -39,10 +39,10 @@ class UrlPage(QtGui.QWidget):
         self.tbwhite.setFrameShadow(QtGui.QFrame.Raised)
         self.tbwhite.setObjectName(_fromUtf8("urlpage_white"))
 
-        self.url_white_lab1 = QtGui.QLabel(self.tbwhite)
-        self.url_white_lab1.setGeometry(QtCore.QRect(18, 15, 381, 16))
-        self.url_white_lab1.setObjectName(_fromUtf8("url_white_lab1"))
-        self.url_white_lab1.setText(_translate("Form", "仅允许访问列表中的URL，黑名单和白名单只能启用一个", None))
+        url_white_lab1 = QtGui.QLabel(self.tbwhite)
+        url_white_lab1.setGeometry(QtCore.QRect(18, 15, 381, 16))
+        url_white_lab1.setObjectName(_fromUtf8("url_white_lab1"))
+        url_white_lab1.setText(_translate("Form", "仅允许访问列表中的URL，黑名单和白名单只能启用一个", None))
 
         self.urlpage_white_start_checkBox = QtGui.QCheckBox(self.tbwhite)
         self.urlpage_white_start_checkBox.setGeometry(QtCore.QRect(18, 38, 101, 23))
@@ -143,10 +143,10 @@ class UrlPage(QtGui.QWidget):
         self.tbblack.setFrameShadow(QtGui.QFrame.Raised)
         self.tbblack.setObjectName(_fromUtf8("urlpage_black"))
 
-        self.url_black_lab1 = QtGui.QLabel(self.tbblack)
-        self.url_black_lab1.setGeometry(QtCore.QRect(18, 15, 381, 16))
-        self.url_black_lab1.setObjectName(_fromUtf8("url_black_lab1"))
-        self.url_black_lab1.setText(_translate("Form", "不允许访问列表中的URL，黑名单和白名单只能启用一个", None))
+        url_black_lab1 = QtGui.QLabel(self.tbblack)
+        url_black_lab1.setGeometry(QtCore.QRect(18, 15, 381, 16))
+        url_black_lab1.setObjectName(_fromUtf8("url_black_lab1"))
+        url_black_lab1.setText(_translate("Form", "不允许访问列表中的URL，黑名单和白名单只能启用一个", None))
 
         self.urlpage_black_start_checkBox = QtGui.QCheckBox(self.tbblack)
         self.urlpage_black_start_checkBox.setGeometry(QtCore.QRect(18, 38, 101, 23))
