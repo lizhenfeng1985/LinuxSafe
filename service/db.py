@@ -19,6 +19,7 @@ GDEBUG = True
 def Connect():
     global GCONN
     global GCUR
+    needCreateTb = False
     cfg = config.ReadConfig()
     try:
         dbname = cfg.get("DataBase", "DbName")
@@ -26,6 +27,9 @@ def Connect():
         print ("[Error] config.get(DataBase, DbName)")
         print (e.message)
         return None
+
+    if os.path.exists(dbname) == False:
+        needCreateTb = True
     
     try:
         con = sqlite3.connect(dbname, check_same_thread = False)
@@ -33,9 +37,12 @@ def Connect():
         print ("[Error] sqlite3.connect(%s)" % (dbname))
         print (e.message)
         return -1
-
+    
     GCONN = con
     GCUR = con.cursor()
+
+    if needCreateTb:
+        CreateTb_Url()
     return 0
 
     
