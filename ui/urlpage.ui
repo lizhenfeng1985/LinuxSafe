@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>651</width>
+    <height>379</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>368</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Tab 1</string>
+    </attribute>
+    <widget class="QLabel" name="urlpage_white_nowpage_lab">
+     <property name="geometry">
+      <rect>
+       <x>144</x>
+       <y>320</y>
+       <width>30</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00000</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="urlpage_white_ok_btn">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>320</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>确定</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="urlpage_white_firstpage_btn">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>320</y>
+       <width>62</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>首页</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="urlpage_white_next_btn">
+     <property name="geometry">
+      <rect>
+       <x>179</x>
+       <y>320</y>
+       <width>62</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>下一页</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>334</x>
+       <y>320</y>
+       <width>24</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>跳到</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="urlpage_white_prev_btn">
+     <property name="geometry">
+      <rect>
+       <x>77</x>
+       <y>320</y>
+       <width>62</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>上一页</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="urlpage_white_selectall_checkBox">
+     <property name="geometry">
+      <rect>
+       <x>570</x>
+       <y>320</y>
+       <width>47</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>全选</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="urlpage_white_totpage_lab">
+     <property name="geometry">
+      <rect>
+       <x>275</x>
+       <y>320</y>
+       <width>54</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>共10000页</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="urlpage_white_jump_lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>363</x>
+       <y>320</y>
+       <width>51</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTableView" name="urlpage_white_tableView">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>64</y>
+       <width>611</width>
+       <height>251</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="urlpage_white_add_btn">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>38</y>
+       <width>45</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>添加</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="urlpage_white_del_btn">
+     <property name="geometry">
+      <rect>
+       <x>570</x>
+       <y>38</y>
+       <width>45</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>删除</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="urlpage_white_start_checkBox">
+     <property name="geometry">
+      <rect>
+       <x>18</x>
+       <y>38</y>
+       <width>101</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>启用白名单</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>18</x>
+       <y>15</y>
+       <width>381</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>宋体</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>仅允许访问列表中的URL，黑名单和白名单只能启用一个</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Tab 2</string>
+    </attribute>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

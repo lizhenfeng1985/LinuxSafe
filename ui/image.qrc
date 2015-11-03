@@ -1,0 +1,11 @@
+<RCC>
+  <qresource>
+    <file>image/bkg_btn.png</file>
+    <file>image/bkg_grey2.jpg</file>
+    <file>image/bkg_grey.jpg</file>
+    <file>image/logo.png</file>
+    <file>image/top_name.png</file>
+    <file>image/bkg_blue.jpg</file>
+    <file>image/bkg_white.jpg</file>
+  </qresource>
+</RCC>
