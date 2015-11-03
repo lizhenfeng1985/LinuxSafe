@@ -15,6 +15,8 @@ urls = (
     '/url/black/getlist', 'url_black_getlist',
     '/url/black/add',     'url_black_add',
     '/url/black/del',     'url_black_del',
+    '/config/get',        'config_get',
+    '/config/set',        'config_set',
 )
 
 
@@ -27,7 +29,31 @@ class index:
         url_whitelist = "lzf"
         return render.index()
 
+class config_get:        
+    def GET(self):
+        ConfigData = {
+            'ErrStat' : 0,
+            'ErrMsg'  : "OK",
+            'Config'  : {}
+        }
+        
+        ConfigData = db.ConfigGet()        
+        return render.config(json.dumps(ConfigData))
+    
+    def POST(self):
+        return self.GET()
 
+class config_set:        
+    def GET(self):
+        ConfigData = {
+            'ErrStat' : 0,
+            'ErrMsg'  : "OK",
+        }
+               
+        return render.config(json.dumps(ConfigData))
+    
+    def POST(self):
+        return self.GET()
     
 if __name__ == "__main__":
     if db.Connect() != 0 :

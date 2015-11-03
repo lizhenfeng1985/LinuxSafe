@@ -143,6 +143,31 @@ def UrlQuery(t, start, length):
     return retList
 
 
+# Cnfig查询
+def ConfigGet():
+    retList = {
+         'ErrStat' : 0,
+         'ErrMsg'  : 'OK',
+         'Config'  : {},
+    }
+    
+    # 查询
+    sql = 'select url_white, url_black from config where id == 1'
+    ret = SqlQuery(sql)
+    if ret[0] != 0:
+        retList['ErrStat'] = ret[0]
+        retList['ErrMsg'] = ret[1]
+        return retList
+
+    if len(ret[2]) != 1:
+        retList['ErrStat'] = -1
+        retList['ErrMsg'] = u'Failed: 查询config失败'
+        return retList
+
+    retList['Config']['White_Start'] = ret[2][0][0]
+    retList['Config']['Black_Start'] = ret[2][0][1]
+    return retList
+
 def CreateTb_Url():
     global GCUR
     global GDEBUG
@@ -169,7 +194,7 @@ def CreateTb_Url():
         return ret
 
     # 写入默认配置
-    sql = '''insert into config (id, url_white, url_black) values (1, 1, 0)'''
+    sql = '''insert into config (id, url_white, url_black) values (1, 2, 0)'''
     ret = SqlExecute(sql)
     if ret[0] != 0 :
         return ret

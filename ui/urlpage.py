@@ -95,7 +95,7 @@ class UrlPage(QtGui.QWidget):
         self.urlpage_white_nowpage_lab = QtGui.QLabel(self.tbwhite)
         self.urlpage_white_nowpage_lab.setGeometry(QtCore.QRect(144, 320, 30, 23))
         self.urlpage_white_nowpage_lab.setObjectName(_fromUtf8("urlpage_white_nowpage_lab"))
-        self.urlpage_white_nowpage_lab.setText(_translate("Form", "10", None))
+        self.urlpage_white_nowpage_lab.setText(_translate("Form", "1", None))
         self.urlpage_white_nowpage_lab.setAlignment(QtCore.Qt.AlignCenter)
         
         self.urlpage_white_next_btn = QtGui.QPushButton(self.tbwhite)
@@ -107,7 +107,7 @@ class UrlPage(QtGui.QWidget):
         self.urlpage_white_totpage_lab = QtGui.QLabel(self.tbwhite)
         self.urlpage_white_totpage_lab.setGeometry(QtCore.QRect(255, 320, 70, 23))
         self.urlpage_white_totpage_lab.setObjectName(_fromUtf8("urlpage_white_totpage_lab"))
-        self.urlpage_white_totpage_lab.setText(_translate("Form", "共10000页", None))
+        self.urlpage_white_totpage_lab.setText(_translate("Form", "共0页", None))
         self.urlpage_white_totpage_lab.setAlignment(QtCore.Qt.AlignCenter)
         
         self.url_white_lab_jmp = QtGui.QLabel(self.tbwhite)
@@ -121,7 +121,7 @@ class UrlPage(QtGui.QWidget):
         self.urlpage_white_jump_lineEdit.setObjectName(_fromUtf8("urlpage_white_jump_lineEdit"))
         self.urlpage_white_jump_lineEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.urlpage_white_jump_lineEdit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
-        self.urlpage_white_jump_lineEdit.setText(_translate("Form", "100", None))        
+        self.urlpage_white_jump_lineEdit.setText(_translate("Form", "1", None))        
 
         self.urlpage_white_ok_btn = QtGui.QPushButton(self.tbwhite)
         self.urlpage_white_ok_btn.setGeometry(QtCore.QRect(420, 320, 75, 23))
@@ -199,7 +199,7 @@ class UrlPage(QtGui.QWidget):
         self.urlpage_black_nowpage_lab = QtGui.QLabel(self.tbblack)
         self.urlpage_black_nowpage_lab.setGeometry(QtCore.QRect(144, 320, 30, 23))
         self.urlpage_black_nowpage_lab.setObjectName(_fromUtf8("urlpage_black_nowpage_lab"))
-        self.urlpage_black_nowpage_lab.setText(_translate("Form", "10", None))
+        self.urlpage_black_nowpage_lab.setText(_translate("Form", "1", None))
         self.urlpage_black_nowpage_lab.setAlignment(QtCore.Qt.AlignCenter)
         
         self.urlpage_black_next_btn = QtGui.QPushButton(self.tbblack)
@@ -211,7 +211,7 @@ class UrlPage(QtGui.QWidget):
         self.urlpage_black_totpage_lab = QtGui.QLabel(self.tbblack)
         self.urlpage_black_totpage_lab.setGeometry(QtCore.QRect(255, 320, 70, 23))
         self.urlpage_black_totpage_lab.setObjectName(_fromUtf8("urlpage_black_totpage_lab"))
-        self.urlpage_black_totpage_lab.setText(_translate("Form", "共10000页", None))
+        self.urlpage_black_totpage_lab.setText(_translate("Form", "共0页", None))
         self.urlpage_black_totpage_lab.setAlignment(QtCore.Qt.AlignCenter)
         
         self.url_black_lab_jmp = QtGui.QLabel(self.tbblack)
@@ -225,7 +225,7 @@ class UrlPage(QtGui.QWidget):
         self.urlpage_black_jump_lineEdit.setObjectName(_fromUtf8("urlpage_black_jump_lineEdit"))
         self.urlpage_black_jump_lineEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.urlpage_black_jump_lineEdit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
-        self.urlpage_black_jump_lineEdit.setText(_translate("Form", "100", None))        
+        self.urlpage_black_jump_lineEdit.setText(_translate("Form", "1", None))        
 
         self.urlpage_black_ok_btn = QtGui.QPushButton(self.tbblack)
         self.urlpage_black_ok_btn.setGeometry(QtCore.QRect(420, 320, 75, 23))
@@ -251,12 +251,12 @@ class UrlAddDialg(QtGui.QDialog):
         # 禁止拉伸窗口
         self.setFixedSize(self.width(), self.height())        
 
-        self.inputurl = QtGui.QLineEdit(self)
-        self.inputurl.setGeometry(QtCore.QRect(20, 20, 250, 23))
-        self.inputurl.setObjectName(_fromUtf8("inputurl"))
-        self.inputurl.setAlignment(QtCore.Qt.AlignLeft)
-        self.inputurl.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
-        #inputurl.setText(_translate("Form", "", "输入URL"))
+        self.lineedit = QtGui.QLineEdit(self)
+        self.lineedit.setGeometry(QtCore.QRect(20, 20, 250, 23))
+        self.lineedit.setObjectName(_fromUtf8("inputurl"))
+        self.lineedit.setAlignment(QtCore.Qt.AlignLeft)
+        self.lineedit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        #lineedit.setText(_translate("Form", "", "输入URL"))
 
         okbtn = QtGui.QPushButton(self)
         okbtn.setGeometry(QtCore.QRect(290, 20, 75, 23))
@@ -264,11 +264,12 @@ class UrlAddDialg(QtGui.QDialog):
         okbtn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
         okbtn.setText(_fromUtf8("确认"))
 
+        self.inputurl = ""
         self.connect(okbtn,QtCore.SIGNAL('clicked()'),self.getUrl)
         self.connect(okbtn, QtCore.SIGNAL('clicked()'), self, QtCore.SLOT('close()'))
 
     def getUrl(self):
-        self.inputurl = self.inputurl.text()
+        self.inputurl = self.lineedit.text()
         
         
         
