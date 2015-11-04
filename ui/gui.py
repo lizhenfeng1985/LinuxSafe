@@ -18,7 +18,7 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl):
         # 标题
         self.setWindowTitle(u"安全防护终端管理系统")
         # 去掉最大化
-        self.setWindowFlags(Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         # 禁止拉伸窗口
         self.setFixedSize(self.width(), self.height())
         # 设置左边列表栏目
