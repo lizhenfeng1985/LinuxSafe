@@ -21,16 +21,21 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl):
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         # 禁止拉伸窗口
         self.setFixedSize(self.width(), self.height())
+        # 屏幕居中
+        screen = QDesktopWidget().screenGeometry()
+        size = self.geometry()
+        self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
+        
         # 设置左边列表栏目
         self.AddListLeft()
         # 设置底部版本号
         self.SetVersionBottom("2015.11.01")
-
         # url
         self.AddListLeftUrl()
 
         # 初始化界面配置
         self.InitConfig()
+        
         
     def AddListLeft(self):
         self.listWidget_left.setGridSize(QSize(111, 25))        

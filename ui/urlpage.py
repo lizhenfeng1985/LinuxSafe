@@ -250,7 +250,11 @@ class UrlAddDialg(QtGui.QDialog):
         # 去掉最大化
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
         # 禁止拉伸窗口
-        self.setFixedSize(self.width(), self.height())        
+        self.setFixedSize(self.width(), self.height())
+        # 屏幕居中
+        screen=QtGui.QDesktopWidget().screenGeometry()
+        size=self.geometry()
+        self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
 
         self.lineedit = QtGui.QLineEdit(self)
         self.lineedit.setGeometry(QtCore.QRect(20, 20, 250, 23))
