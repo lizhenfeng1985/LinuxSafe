@@ -39,22 +39,22 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl):
         #self.listWidget_left.insertItem(0, QListWidgetItem(QIcon("./image/bkg_blue.jpg"), "Url"))
 
         self.listWidget_left.insertItem(0, QListWidgetItem(u"    Url过滤"))
-        self.listWidget_left.insertItem(1, QListWidgetItem(u"    防火墙"))
-        self.listWidget_left.insertItem(2, QListWidgetItem(u"    外设管理"))
-        self.listWidget_left.insertItem(3, QListWidgetItem(u"    特殊资源"))
-        self.listWidget_left.insertItem(4, QListWidgetItem(u"    可信运行"))
-        self.listWidget_left.insertItem(5, QListWidgetItem(u"    进程防护"))
-        self.listWidget_left.insertItem(6, QListWidgetItem(u"    目录防护"))
-        self.listWidget_left.insertItem(7, QListWidgetItem(u"    系统设置"))
-        self.listWidget_left.insertItem(8, QListWidgetItem(u"    防护日志"))
+        #self.listWidget_left.insertItem(1, QListWidgetItem(u"    防火墙"))
+        #self.listWidget_left.insertItem(2, QListWidgetItem(u"    外设管理"))
+        #self.listWidget_left.insertItem(3, QListWidgetItem(u"    特殊资源"))
+        #self.listWidget_left.insertItem(4, QListWidgetItem(u"    可信运行"))
+        #self.listWidget_left.insertItem(5, QListWidgetItem(u"    进程防护"))
+        #self.listWidget_left.insertItem(6, QListWidgetItem(u"    目录防护"))
+        self.listWidget_left.insertItem(1, QListWidgetItem(u"    系统设置"))
+        self.listWidget_left.insertItem(2, QListWidgetItem(u"    防护日志"))
 
         self.connect(self.listWidget_left, SIGNAL("itemClicked (QListWidgetItem*)"), self.SelectLeftList)
         
     def SelectLeftList(self, Item=None):
-        QMessageBox.about(self, u"左侧列表", u"左侧列表")
+        #QMessageBox.about(self, u"左侧列表", u"左侧列表")
         if Item==None:
             return
-        QMessageBox.about(self, Item.text(), Item.text())
+        #QMessageBox.about(self, Item.text(), Item.text())
 
     def SetVersionBottom(self, version):
         self.label_bottom_version.setText(main._translate("Form", "版本 : " + version, None))
