@@ -69,10 +69,17 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl):
         url = "http://127.0.0.1:8080/config/get"
         ret = http.Post(url, {})
         if ret['ErrStat'] == 0:
-            config.GLB_CFG['URL']['White_Start'] = ret['Config']['White_Start']
-            config.GLB_CFG['URL']['Black_Start'] = ret['Config']['Black_Start']
-            self.urlpage.urlpage_white_start_checkBox.setCheckState(config.GLB_CFG['URL']['White_Start'])
-            self.urlpage.urlpage_black_start_checkBox.setCheckState(config.GLB_CFG['URL']['Black_Start'])
+            bWhite = ret['Config']['White_Start']
+            bBlack = ret['Config']['Black_Start']
+            if bWhite != 0:
+                bWhite = 2
+            if bBlack != 0:
+                bBlack = 2
+                
+            config.GLB_CFG['URL']['White_Start'] = bWhite
+            config.GLB_CFG['URL']['Black_Start'] = bBlack
+            self.urlpage.urlpage_white_start_checkBox.setCheckState(bWhite)
+            self.urlpage.urlpage_black_start_checkBox.setCheckState(bBlack)
             return 0
         else:
             QMessageBox.about(self, u"获取配置信息", u"获取配置信息:" + ret['ErrMsg'])

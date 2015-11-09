@@ -114,7 +114,7 @@ class GuiUrl(QWidget):
             config.GLB_CFG['URL']['Black_Start'] = chkb
             self.urlpage.urlpage_white_start_checkBox.setCheckState(chkw)
             self.urlpage.urlpage_black_start_checkBox.setCheckState(chkb)
-            QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
+            #QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
         else:
             QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
 
@@ -249,7 +249,7 @@ class GuiUrl(QWidget):
             config.GLB_CFG['URL']['Black_TotPage'] = totpage
         else:
             QMessageBox.about(self, u"获取URL列表", u"错误:" + ret['ErrMsg'])
-
+    
     ## 黑名单启用 消息
     def UrlPageBlackCheckStart(self):
         chkw = self.urlpage.urlpage_white_start_checkBox.checkState()
@@ -275,7 +275,7 @@ class GuiUrl(QWidget):
             config.GLB_CFG['URL']['Black_Start'] = chkb
             self.urlpage.urlpage_white_start_checkBox.setCheckState(chkw)
             self.urlpage.urlpage_black_start_checkBox.setCheckState(chkb)
-            QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
+            #QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
         else:
             QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
 

@@ -25,11 +25,8 @@ def FilterMsg(msg):
 
 		if op_type == 63 : # url
                         print '[URL][%d][%s][%s][%s]' % (op_type, sub_proc, sip_dip, host + uri)
-                        r = event_url.UrlCheck(host)
-                        if r == 1 : # 域名被禁止 - 所有子页不许访问
-                                ret = [0, forbid]
-                        r = event_url.UrlCheck(host + uri)
-                        if r == 1 : # 子页不许访问
+                        r = event_url.UrlCheck(host, uri)
+                        if r == 1 : # 禁止访问
                                 ret = [0, forbid]
                         print ret
                 else:

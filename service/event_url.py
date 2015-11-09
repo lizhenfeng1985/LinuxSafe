@@ -60,29 +60,38 @@ def UrlDel(url):
 
 ## 检查URL是否允许访问
 #  返回值 0允许访问 1不允许访问
-def UrlCheck(url):
+def UrlCheck(host, uri):
         global GMUTEX_URL
         global GURLDIC
         global GURLWHITESTAT
         global GURLBLACKSTAT
-        
+
+        url_all = host + '/*'
+        url     = host + uri
         if GMUTEX_URL.acquire(1):
-                bHasUrl = GURLDIC.has_key(url)
-                urlType = 1
-                
-                if bHasUrl:
-                        urlType = GURLDIC[url]
-                
                 if GURLWHITESTAT == 1: # 白名单开启
-                        if bHasUrl == True and urlType == 0:
-                                ret = 0
-                        else:
-                                ret = 1
-                elif GURLBLACKSTAT == 1: # 黑名单开启
-                        if bHasUrl == True and urlType == 1:
-                                ret = 1
-                        else:
-                                ret = 0                        
+                        if GURLDIC.has_key(url_all): # 包含hots/*的全部放行
+                                GMUTEX_URL.release()
+                                return 0
+                        if GURLDIC.has_key(url):     # 包含hots/uri的放行
+                                GMUTEX_URL.release()
+                                return 0
+
+                        # 其他禁止
+                        GMUTEX_URL.release()
+                        return 1
+                        
+                if GURLBLACKSTAT == 1: # 黑名单开启
+                        if GURLDIC.has_key(url_all): # 包含hots/*的全部禁止
+                                GMUTEX_URL.release()
+                                return 1
+                        if GURLDIC.has_key(url):     # 包含hots/uri的禁止
+                                GMUTEX_URL.release()
+                                return 1
+
+                        # 其他放行
+                        GMUTEX_URL.release()
+                        return 0
                 GMUTEX_URL.release()
         return ret
 
