@@ -3,6 +3,7 @@ import web
 import db
 import sys
 import json
+import event_url
 
 render = web.template.render('templates/')
 
@@ -44,6 +45,8 @@ class url_white_add:
             return render.url_white(json.dumps(UrlWhite))
         
         ret = db.UrlAdd(param['Url'], 0)
+        if ret[0] == 0:
+            event_url.UrlAddWhite(param['Url'])
         UrlWhite['ErrStat'] = ret[0]
         UrlWhite['ErrMsg'] = ret[1]
         return render.url_white(json.dumps(UrlWhite))
@@ -65,6 +68,8 @@ class url_white_del:
             return render.url_white(json.dumps(UrlWhite))
         
         ret = db.UrlDel(param['Url'])
+        if ret[0] == 0:
+            event_url.UrlDel(param['Url'])
         UrlWhite['ErrStat'] = ret[0]
         UrlWhite['ErrMsg'] = ret[1]
         return render.url_white(json.dumps(UrlWhite))
@@ -110,6 +115,8 @@ class url_black_add:
             return render.url_white(json.dumps(UrlWhite))
         
         ret = db.UrlAdd(param['Url'], 1)
+        if ret[0] == 0:
+            event_url.UrlAddBlack(param['Url'])
         UrlWhite['ErrStat'] = ret[0]
         UrlWhite['ErrMsg'] = ret[1]
         return render.url_white(json.dumps(UrlWhite))
@@ -131,10 +138,60 @@ class url_black_del:
             return render.url_white(json.dumps(UrlWhite))
         
         ret = db.UrlDel(param['Url'])
+        if ret[0] == 0:
+            event_url.UrlDel(param['Url'])
         UrlWhite['ErrStat'] = ret[0]
         UrlWhite['ErrMsg'] = ret[1]
         return render.url_white(json.dumps(UrlWhite))
 
     def POST(self):
         return self.GET()
+
+class config_get:        
+    def GET(self):
+        ConfigData = {
+            'ErrStat' : 0,
+            'ErrMsg'  : "OK",
+            'Config'  : {}
+        }
+        
+        ConfigData = db.ConfigGet()        
+        return render.config(json.dumps(ConfigData))
     
+    def POST(self):
+        return self.GET()
+
+class config_set:
+    def GET(self):
+        ConfigData = {
+            'ErrStat' : 0,
+            'ErrMsg'  : "OK",
+        }
+        
+        param = web.input()
+        if param.has_key('WhiteStatus') == False:
+            UrlWhite['ErrStat'] = -1
+            UrlWhite['ErrMsg'] = u'缺少参数 param:WhiteStatus=status'
+            return render.config(json.dumps(ConfigData))
+        if param.has_key('BlackStatus') == False:
+            UrlWhite['ErrStat'] = -1
+            UrlWhite['ErrMsg'] = u'缺少参数 param:BlackStatus=status'
+            return render.config(json.dumps(ConfigData))
+        
+        try:
+            wstat = int(param['WhiteStatus'])
+            bstat = int(param['BlackStatus'])
+        except:
+            onfigData['ErrStat'] = -1
+            ConfigData['ErrMsg'] = "Failed:param value err"
+            return render.config(json.dumps(ConfigData))
+        
+        ret = db.ConfigSet(wstat, bstat)
+        if ret[0] == 0:
+            event_url.UrlSetStat(wstat, bstat)
+        ConfigData['ErrStat'] = ret[0]
+        ConfigData['ErrMsg'] = ret[1]
+        return render.config(json.dumps(ConfigData))
+    
+    def POST(self):
+        return self.GET()

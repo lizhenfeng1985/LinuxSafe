@@ -3,7 +3,11 @@ import web
 import db
 import sys
 import json
+import event_srv
+import event_url
+import threading
 from service_url import *
+
 
 render = web.template.render('templates/')
 
@@ -29,33 +33,42 @@ class index:
         url_whitelist = "lzf"
         return render.index()
 
-class config_get:        
-    def GET(self):
-        ConfigData = {
-            'ErrStat' : 0,
-            'ErrMsg'  : "OK",
-            'Config'  : {}
-        }
-        
-        ConfigData = db.ConfigGet()        
-        return render.config(json.dumps(ConfigData))
-    
-    def POST(self):
-        return self.GET()
+# 初始化URL
+def InitUrl():
+    # 配置
+    ret = db.ConfigGet()
+    if ret['ErrStat'] != 0:
+        print ret['ErrMsg']
+        return ret[0]
+    event_url.UrlSetStat(ret['Config']['White_Start'], ret['Config']['Black_Start'])
 
-class config_set:        
-    def GET(self):
-        ConfigData = {
-            'ErrStat' : 0,
-            'ErrMsg'  : "OK",
-        }
-               
-        return render.config(json.dumps(ConfigData))
-    
-    def POST(self):
-        return self.GET()
+    # 白名单
+    ret = db.UrlQuery(0, 0, 65535)
+    if ret['ErrStat'] != 0:
+        print ret['ErrMsg']
+        return ret[ErrStat]
+    for url in ret['Lists']:
+        event_url.UrlAddWhite(url)
+
+    # 黑名单
+    ret = db.UrlQuery(1, 0, 65535)
+    if ret['ErrStat'] != 0:
+        print ret['ErrMsg']
+        return ret[ErrStat]
+    for url in ret['Lists']:
+        event_url.UrlAddBlack(url)
+    return 0
     
 if __name__ == "__main__":
     if db.Connect() != 0 :
         sys.exit()
+
+    # url初始化
+    InitUrl()
+
+    # 启动消息处理服务
+    server = event_srv.EpollServer(host="localhost", port=7000)
+    t_event = threading.Thread(target=server.run, args=())
+    t_event.start()
+    
     app.run()

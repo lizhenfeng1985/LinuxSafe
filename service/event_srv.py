@@ -4,33 +4,38 @@ import socket
 import select 
 import struct
 import threading
-
+import event_url
 Tst_Sendstr = "welcome epoll server"
 
 SERVER_HOST  = 'localhost'
-KERNMSG_RECV_LEN = 808
+KERNMSG_RECV_LEN = 872
 KERNMSG_SEND_LEN = 4
 
-mutex = threading.Lock()
 
 def FilterMsg(msg):
-	baidu = "www.baidu.com"
 	allow  = struct.pack("I", 0)
 	forbid = struct.pack("I", 1)
 	ret = [0, allow]
-	if mutex.acquire(1): 
-		try:
-			op_type, uid, sub_pid, obj_pid, sip_dip, host, uri = struct.unpack("4I264s264s264s", msg)
-			sip_dip = sip_dip.split('\x00')[0]
-			host    = host.split('\x00')[0]
-			uri     = uri.split('\x00')[0]
-			print op_type, sip_dip, "[%s][%s]" % (host, uri)
-			if host == baidu:
-				print "Forbid baidu"
-				ret = [0, forbid]	
-		except:
-			pass
-		mutex.release()
+	try:
+		op_type, uid, sub_pid, obj_pid, sub_proc, host, uri, sip_dip = struct.unpack("4I264s264s264s64s", msg)
+		sub_proc= sub_proc.split('\x00')[0]
+		sip_dip = sip_dip.split('\x00')[0]
+		host    = host.split('\x00')[0]
+		uri     = uri.split('\x00')[0]
+
+		if op_type == 63 : # url
+                        print '[URL][%d][%s][%s][%s]' % (op_type, sub_proc, sip_dip, host + uri)
+                        r = event_url.UrlCheck(host)
+                        if r == 1 : # 域名被禁止 - 所有子页不许访问
+                                ret = [0, forbid]
+                        r = event_url.UrlCheck(host + uri)
+                        if r == 1 : # 子页不许访问
+                                ret = [0, forbid]
+                        print ret
+                else:
+                        print '[%d][%s]' % (op_type, sub_proc)
+	except:
+		print "ERR unpack len = ", len(msg)
 	return ret
 
 class EpollServer(object):

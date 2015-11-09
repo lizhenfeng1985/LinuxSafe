@@ -37,7 +37,6 @@ class GuiUrl(QWidget):
         self.connect(self.urlpage.urlpage_white_ok_btn, SIGNAL("clicked()"), self.UrlPageWhiteJump)
         self.connect(self.urlpage.urlpage_white_selectall_checkBox, SIGNAL("clicked()"), self.UrlPageWhiteSelectAll)
         self.connect(self.urlpage.urlpage_white_start_checkBox, SIGNAL("clicked()"), self.UrlPageWhiteCheckStart)
-        self.connect(self.urlpage.urlpage_black_start_checkBox, SIGNAL("clicked()"), self.UrlPageBlackCheckStart)
 
         # 黑名单 - 消息处理
         self.connect(self.urlpage.urlpage_black_add_btn, SIGNAL("clicked()"), self.UrlPageBlackAdd)
@@ -47,7 +46,6 @@ class GuiUrl(QWidget):
         self.connect(self.urlpage.urlpage_black_next_btn, SIGNAL("clicked()"), self.UrlPageBlackNextPage)
         self.connect(self.urlpage.urlpage_black_ok_btn, SIGNAL("clicked()"), self.UrlPageBlackJump)
         self.connect(self.urlpage.urlpage_black_selectall_checkBox, SIGNAL("clicked()"), self.UrlPageBlackSelectAll)
-        self.connect(self.urlpage.urlpage_black_start_checkBox, SIGNAL("clicked()"), self.UrlPageBlackCheckStart)
         self.connect(self.urlpage.urlpage_black_start_checkBox, SIGNAL("clicked()"), self.UrlPageBlackCheckStart)
         
         label2=QLabel(u"这是窗口2!")
@@ -93,18 +91,32 @@ class GuiUrl(QWidget):
 
     ## 白名单 - 启用 消息
     def UrlPageWhiteCheckStart(self):
-        chk = self.urlpage.urlpage_white_start_checkBox.checkState()
-        if chk == 0: #不选
-            config.GLB_CFG['URL']['White_Start'] = 0
-            # 发送消息给后台
-        elif chk == 2: #选中
-            config.GLB_CFG['URL']['White_Start'] = 2
-            if self.urlpage.urlpage_black_start_checkBox.checkState():
-                config.GLB_CFG['URL']['Black_Start'] = 0
-                self.urlpage.urlpage_black_start_checkBox.setCheckState(0)
+        chkw = self.urlpage.urlpage_white_start_checkBox.checkState()
+        chkb = self.urlpage.urlpage_black_start_checkBox.checkState()
+
+        bsetw = 0
+        bsetb = 0
+
+        if chkw == 2 or chkw == 1: # 白选中
+            chkw  = 2
+            chkb  = 0
+            bsetw = 1
+            bsetb = 0
         else:
             pass
 
+        url = "http://127.0.0.1:8080/config/set"
+        param = {'WhiteStatus' : bsetw, 'BlackStatus' : bsetb}
+        ret = http.Post(url, param)
+        if ret['ErrStat'] == 0:
+            # 更新数据
+            config.GLB_CFG['URL']['White_Start'] = chkw
+            config.GLB_CFG['URL']['Black_Start'] = chkb
+            self.urlpage.urlpage_white_start_checkBox.setCheckState(chkw)
+            self.urlpage.urlpage_black_start_checkBox.setCheckState(chkb)
+            QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
+        else:
+            QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
 
     # 白名单 - 添加
     def UrlPageWhiteAdd(self):
@@ -240,17 +252,32 @@ class GuiUrl(QWidget):
 
     ## 黑名单启用 消息
     def UrlPageBlackCheckStart(self):
-        chk = self.urlpage.urlpage_black_start_checkBox.checkState()
-        if chk == 0: #不选
-            config.GLB_CFG['URL']['Black_Start'] = 0
-            # 发送消息给后台
-        elif chk == 2: #选中
-            config.GLB_CFG['URL']['Black_Start'] = 2
-            if self.urlpage.urlpage_black_start_checkBox.checkState():
-                config.GLB_CFG['URL']['White_Start'] = 0
-                self.urlpage.urlpage_white_start_checkBox.setCheckState(0)
+        chkw = self.urlpage.urlpage_white_start_checkBox.checkState()
+        chkb = self.urlpage.urlpage_black_start_checkBox.checkState()
+
+        bsetw = 0
+        bsetb = 0
+
+        if chkb == 2 or chkb == 1: # 黑选中
+            chkb  = 2
+            chkw  = 0
+            bsetb = 1
+            bsetw = 0
         else:
             pass
+            
+        url = "http://127.0.0.1:8080/config/set"
+        param = {'WhiteStatus' : bsetw, 'BlackStatus' : bsetb}
+        ret = http.Post(url, param)
+        if ret['ErrStat'] == 0:
+            # 更新数据
+            config.GLB_CFG['URL']['White_Start'] = chkw
+            config.GLB_CFG['URL']['Black_Start'] = chkb
+            self.urlpage.urlpage_white_start_checkBox.setCheckState(chkw)
+            self.urlpage.urlpage_black_start_checkBox.setCheckState(chkb)
+            QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
+        else:
+            QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
 
 
     # 黑名单 - 添加

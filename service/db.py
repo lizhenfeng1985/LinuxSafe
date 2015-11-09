@@ -13,7 +13,7 @@ global GDEBUG   # 调试模式
 GMUTEX = threading.Lock() # 线程锁
 GCONN  = None
 GCUR   = None
-GDEBUG = True
+GDEBUG = False
 
 
 def Connect():
@@ -167,6 +167,14 @@ def ConfigGet():
     retList['Config']['White_Start'] = ret[2][0][0]
     retList['Config']['Black_Start'] = ret[2][0][1]
     return retList
+
+# Cnfig设置
+def ConfigSet(url_white, url_black):
+    # 更新
+    sql = 'update config set url_white = %d, url_black = %d where id == 1' % (url_white, url_black)
+    ret = SqlExecute(sql)
+    return ret
+
 
 def CreateTb_Url():
     global GCUR
