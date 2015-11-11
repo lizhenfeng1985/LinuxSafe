@@ -70,24 +70,28 @@ def UrlCheck(host, uri):
         url     = host + uri
         if GMUTEX_URL.acquire(1):
                 if GURLWHITESTAT == 1: # 白名单开启
-                        if GURLDIC.has_key(url_all): # 包含hots/*的全部放行
-                                GMUTEX_URL.release()
-                                return 0
-                        if GURLDIC.has_key(url):     # 包含hots/uri的放行
-                                GMUTEX_URL.release()
-                                return 0
+                        if GURLDIC.has_key(url_all):       # 包含hots/*
+                                if GURLDIC[url_all] == 0 : # 类型是白名单(0)全部放行
+                                        GMUTEX_URL.release()
+                                        return 0
+                        if GURLDIC.has_key(url):           # 包含hots/uri的放行
+                                if GURLDIC[url] == 0 :     # 类型是白名单(0)全部放行
+                                        GMUTEX_URL.release()
+                                        return 0
 
                         # 其他禁止
                         GMUTEX_URL.release()
                         return 1
                         
                 if GURLBLACKSTAT == 1: # 黑名单开启
-                        if GURLDIC.has_key(url_all): # 包含hots/*的全部禁止
-                                GMUTEX_URL.release()
-                                return 1
-                        if GURLDIC.has_key(url):     # 包含hots/uri的禁止
-                                GMUTEX_URL.release()
-                                return 1
+                        if GURLDIC.has_key(url_all):       # 包含hots/*
+                                if GURLDIC[url_all] == 1 : # 类型是黑名单(1)全部禁止
+                                        GMUTEX_URL.release()
+                                        return 1
+                        if GURLDIC.has_key(url):           # 包含hots/uri的禁止
+                                if GURLDIC[url] == 1 :     # 类型是黑名单(1)全部禁止
+                                        GMUTEX_URL.release()
+                                        return 1
 
                         # 其他放行
                         GMUTEX_URL.release()
