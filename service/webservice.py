@@ -5,8 +5,10 @@ import sys
 import json
 import event_srv
 import event_url
+import event_device
 import threading
 from service_url import *
+from service_device import *
 
 
 render = web.template.render('templates/')
@@ -21,6 +23,8 @@ urls = (
     '/url/black/del',     'url_black_del',
     '/config/get',        'config_get',
     '/config/set',        'config_set',
+    '/config/getdevice',  'config_get_device',
+    '/config/setdevice',  'config_set_device',
 )
 
 
@@ -58,13 +62,27 @@ def InitUrl():
     for url in ret['Lists']:
         event_url.UrlAddBlack(url)
     return 0
+
+# 初始化Device
+def InitDevice():
+    # 配置
+    ret = db.ConfigGetDevice()
+    if ret['ErrStat'] != 0:
+        print ret['ErrMsg']
+        return ret[0]
     
+    event_device.DeviceSetStat(ret['Config']['CdromStatus'], ret['Config']['UsbStatus'])
+    return 0
+
 if __name__ == "__main__":
     if db.Connect() != 0 :
         sys.exit()
 
     # url初始化
     InitUrl()
+
+    # 初始化Device
+    InitDevice()
 
     # 启动消息处理服务
     server = event_srv.EpollServer(host="localhost", port=7000)

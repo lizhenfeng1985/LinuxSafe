@@ -5,6 +5,7 @@ import select
 import struct
 import threading
 import event_url
+import event_device
 Tst_Sendstr = "welcome epoll server"
 
 SERVER_HOST  = 'localhost'
@@ -17,15 +18,30 @@ def FilterMsg(msg):
 	forbid = struct.pack("I", 1)
 	ret = [0, allow]
 	try:
-		op_type, uid, sub_pid, obj_pid, sub_proc, host, uri, sip_dip = struct.unpack("4I264s264s264s64s", msg)
-		sub_proc= sub_proc.split('\x00')[0]
+		#op_type, uid, sub_pid, obj_pid, sub_proc, host, uri, sip_dip = struct.unpack("4I264s264s264s64s", msg)
+		op_type, uid, sub_pid, obj_pid, sub_pro, obj_src, obj_dst, sip_dip = struct.unpack("4I264s264s264s64s", msg)
+		sub_pro = sub_pro.split('\x00')[0]
 		sip_dip = sip_dip.split('\x00')[0]
-		host    = host.split('\x00')[0]
-		uri     = uri.split('\x00')[0]
+		obj_src = obj_src.split('\x00')[0]
+		obj_dst = obj_dst.split('\x00')[0]
 
 		if op_type == 63 : # url
-                        print '[URL][%d][%s][%s][%s]' % (op_type, sub_proc, sip_dip, host + uri)
+                        host = obj_src
+                        uri  = obj_dst
+                        print '[URL][type=%d][sub=%s][sip_dip=%s][url=%s]' % (op_type, sub_pro, sip_dip, host + uri)
                         r = event_url.UrlCheck(host, uri)
+                        if r == 1 : # 禁止访问
+                                ret = [0, forbid]
+                        print ret
+                elif op_type == 71 : # DEVICE CDROM
+                        print '[DEVICE_CDROM][type=%d][sub=%s][obj_src=%s][obj_dst=%s]' % (op_type, sub_pro, obj_src, obj_dst)
+                        r = event_device.UrlCheckCdrom()
+                        if r == 1 : # 禁止访问
+                                ret = [0, forbid]
+                        print ret
+                elif op_type == 72 : # DEVICE USB
+                        print '[DEVICE_USB][type=%d][sub=%s][obj_src=%s][obj_dst=%s]' % (op_type, sub_pro, obj_src, obj_dst)
+                        r = event_device.UrlCheckUsb()
                         if r == 1 : # 禁止访问
                                 ret = [0, forbid]
                         print ret

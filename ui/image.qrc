@@ -1,5 +1,10 @@
 <RCC>
   <qresource>
+    <file>image/btn_off.png</file>
+    <file>image/btn_on.png</file>
+    <file>image/device_cdrom.png</file>
+    <file>image/device_logo.png</file>
+    <file>image/device_usb.png</file>
     <file>image/bkg_btn.png</file>
     <file>image/bkg_grey2.jpg</file>
     <file>image/bkg_grey.jpg</file>

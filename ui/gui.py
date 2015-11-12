@@ -7,10 +7,11 @@ import urlpage
 import http
 import config
 import gui_url
+import gui_device
 
 _encoding = QApplication.UnicodeUTF8
 
-class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl):  
+class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice):  
     def __init__(self,parent=None):  
         super(GuiMain,self).__init__(parent)        
         self.setupUi(self)
@@ -32,6 +33,10 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl):
         self.SetVersionBottom("2015.11.01")
         # url
         self.AddListLeftUrl()
+        
+        # 外设管理
+        self.AddListLeftDevice()
+        
 
         # 初始化界面配置
         self.InitConfig()
@@ -50,7 +55,8 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl):
         #self.listWidget_left.insertItem(4, QListWidgetItem(u"    可信运行"))
         #self.listWidget_left.insertItem(5, QListWidgetItem(u"    进程防护"))
         #self.listWidget_left.insertItem(6, QListWidgetItem(u"    目录防护"))
-        self.listWidget_left.insertItem(1, QListWidgetItem(u"    系统设置"))
+        #self.listWidget_left.insertItem(1, QListWidgetItem(u"    系统设置"))
+        self.listWidget_left.insertItem(1, QListWidgetItem(u"    外设管理"))
         self.listWidget_left.insertItem(2, QListWidgetItem(u"    防护日志"))
 
         self.connect(self.listWidget_left, SIGNAL("itemClicked (QListWidgetItem*)"), self.SelectLeftList)

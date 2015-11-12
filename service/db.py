@@ -175,6 +175,37 @@ def ConfigSet(url_white, url_black):
     ret = SqlExecute(sql)
     return ret
 
+# Cnfig查询Device
+def ConfigGetDevice():
+    retList = {
+         'ErrStat' : 0,
+         'ErrMsg'  : 'OK',
+         'Config'  : {},
+    }
+    
+    # 查询
+    sql = 'select device_cdrom, device_usb from config where id == 1'
+    ret = SqlQuery(sql)
+    if ret[0] != 0:
+        retList['ErrStat'] = ret[0]
+        retList['ErrMsg'] = ret[1]
+        return retList
+
+    if len(ret[2]) != 1:
+        retList['ErrStat'] = -1
+        retList['ErrMsg'] = u'Failed: 查询config_device失败'
+        return retList
+
+    retList['Config']['CdromStatus'] = ret[2][0][0]
+    retList['Config']['UsbStatus']   = ret[2][0][1]
+    return retList
+
+# Cnfig设置Device
+def ConfigSetDevice(device_cdrom, device_usb):
+    # 更新
+    sql = 'update config set device_cdrom = %d, device_usb = %d where id == 1' % (device_cdrom, device_usb)
+    ret = SqlExecute(sql)
+    return ret
 
 def CreateTb_Url():
     global GCUR
@@ -195,14 +226,16 @@ def CreateTb_Url():
     sql = '''create table if not exists config (
 	id integer not null primary key, 
 	url_white integer,
-	url_black integer
+	url_black integer,
+	device_cdrom integer,
+	device_usb integer
     );'''
     ret = SqlExecute(sql)
     if ret[0] != 0 :
         return ret
 
     # 写入默认配置
-    sql = '''insert into config (id, url_white, url_black) values (1, 2, 0)'''
+    sql = '''insert into config (id, url_white, url_black, device_cdrom, device_usb) values (1, 0, 0, 0, 0)'''
     ret = SqlExecute(sql)
     if ret[0] != 0 :
         return ret

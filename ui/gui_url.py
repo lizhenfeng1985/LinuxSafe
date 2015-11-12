@@ -48,8 +48,8 @@ class GuiUrl(QWidget):
         self.connect(self.urlpage.urlpage_black_selectall_checkBox, SIGNAL("clicked()"), self.UrlPageBlackSelectAll)
         self.connect(self.urlpage.urlpage_black_start_checkBox, SIGNAL("clicked()"), self.UrlPageBlackCheckStart)
         
-        label2=QLabel(u"这是窗口2!")
-        self.frame_mid_right.addWidget(label2)
+        #label2=QLabel(u"这是窗口2!")
+        #self.frame_mid_right.addWidget(label2)
         
         self.connect(self.listWidget_left,SIGNAL("currentRowChanged(int)"),self.frame_mid_right,SLOT("setCurrentIndex(int)"))
 

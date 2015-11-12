@@ -18,7 +18,7 @@ global GURLBLACKSTAT   # URL黑名单状态 0:关闭 1:开启
 
 GURLDIC = {}  # url : type (type=0 白名单 type=1 黑名单)
 GURLWHITESTAT = 0
-GURLBLACKSTAT = 1
+GURLBLACKSTAT = 0
 GMUTEX_URL    = threading.Lock()
 
 ## 添加白名单URL
