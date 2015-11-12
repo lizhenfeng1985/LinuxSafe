@@ -86,7 +86,7 @@ def InitSpecrc():
         print ret['ErrMsg']
         return ret[0]
     
-    event_specrc.SpecrcSetStat(ret['Config']['ShutDownStat'], ret['Config']['SetTimeStatus'])
+    event_specrc.SpecrcSetStat(ret['Config']['ShutDownStatus'], ret['Config']['SetTimeStatus'])
     return 0
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@ import struct
 import threading
 import event_url
 import event_device
+import event_specrc
 Tst_Sendstr = "welcome epoll server"
 
 SERVER_HOST  = 'localhost'
@@ -25,7 +26,21 @@ def FilterMsg(msg):
 		obj_src = obj_src.split('\x00')[0]
 		obj_dst = obj_dst.split('\x00')[0]
 
-		if op_type == 63 : # url
+		if op_type == 51 : # SPECRC SetTime
+                        print '[SPECRC_SetTime][type=%d][sub=%s][obj_src=%s][obj_dst=%s]' % (op_type, sub_pro, obj_src, obj_dst)
+                        r = event_specrc.SpecrcCheckSetTime()
+                        if r == 1 : # 禁止访问
+                                ret = [0, forbid]
+                        print ret
+                        
+                elif op_type == 52 : # SPECRC ShutDown
+                        print '[SPECRC_ShutDown][type=%d][sub=%s][obj_src=%s][obj_dst=%s]' % (op_type, sub_pro, obj_src, obj_dst)
+                        r = event_specrc.SpecrcCheckShutDown()
+                        if r == 1 : # 禁止访问
+                                ret = [0, forbid]
+                        print ret
+
+		elif op_type == 63 : # url
                         host = obj_src
                         uri  = obj_dst
                         print '[URL][type=%d][sub=%s][sip_dip=%s][url=%s]' % (op_type, sub_pro, sip_dip, host + uri)

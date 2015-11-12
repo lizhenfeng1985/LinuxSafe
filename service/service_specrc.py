@@ -31,12 +31,12 @@ class config_set_specrc:
         
         param = web.input()
         if param.has_key('ShutDownStatus') == False:
-            UrlWhite['ErrStat'] = -1
-            UrlWhite['ErrMsg'] = u'缺少参数 param:ShutDownStatus=status'
+            ConfigData['ErrStat'] = -1
+            ConfigData['ErrMsg'] = u'缺少参数 param:ShutDownStatus=status'
             return render.config(json.dumps(ConfigData))
         if param.has_key('SetTimeStatus') == False:
-            UrlWhite['ErrStat'] = -1
-            UrlWhite['ErrMsg'] = u'缺少参数 param:SetTimeStatus=status'
+            ConfigData['ErrStat'] = -1
+            ConfigData['ErrMsg'] = u'缺少参数 param:SetTimeStatus=status'
             return render.config(json.dumps(ConfigData))
         
         try:

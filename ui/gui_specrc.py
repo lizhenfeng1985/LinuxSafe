@@ -142,18 +142,8 @@ class GuiSpecrc(QtGui.QWidget):
         self.list_widget.setCellWidget(line, 2, item)
         self.list_widget_shutdown_onoff = img
     
-    def SpecrcOnOffClick(self, line, col):
+    def SpecrcOnOffClick(self, line, col):        
         if line == 0 and col == 2:
-            if self.list_widget_shutdown_value == 0:
-                self.list_widget_shutdown_value = 1
-                self.list_widget_shutdown_text.setText(_fromUtf8("等待应用到服务器"))
-                self.list_widget_shutdown_onoff.setStyleSheet(_fromUtf8("border-image: url(:/image/btn_on.png);"))
-            else:
-                self.list_widget_shutdown_value = 0
-                self.list_widget_shutdown_text.setText(_fromUtf8("等待应用到服务器"))
-                self.list_widget_shutdown_onoff.setStyleSheet(_fromUtf8("border-image: url(:/image/btn_off.png);"))
-            
-        if line == 1 and col == 2:
             if self.list_widget_settime_value == 0:
                 self.list_widget_settime_value = 1
                 self.list_widget_settime_text.setText(_fromUtf8("等待应用到服务器"))
@@ -162,12 +152,22 @@ class GuiSpecrc(QtGui.QWidget):
                 self.list_widget_settime_value = 0
                 self.list_widget_settime_text.setText(_fromUtf8("等待应用到服务器"))
                 self.list_widget_settime_onoff.setStyleSheet(_fromUtf8("border-image: url(:/image/btn_off.png);"))
+                
+        if line == 1 and col == 2:
+            if self.list_widget_shutdown_value == 0:
+                self.list_widget_shutdown_value = 1
+                self.list_widget_shutdown_text.setText(_fromUtf8("等待应用到服务器"))
+                self.list_widget_shutdown_onoff.setStyleSheet(_fromUtf8("border-image: url(:/image/btn_on.png);"))
+            else:
+                self.list_widget_shutdown_value = 0
+                self.list_widget_shutdown_text.setText(_fromUtf8("等待应用到服务器"))
+                self.list_widget_shutdown_onoff.setStyleSheet(_fromUtf8("border-image: url(:/image/btn_off.png);"))
+
             
-    
     def SpecrcOkBtnClick(self):
         url = "http://127.0.0.1:8080/config/setspecrc"
-        param = {'CdromStatus' :  self.list_widget_shutdown_value,
-                 'UsbStatus'   : self.list_widget_settime_value
+        param = {'ShutDownStatus' :  self.list_widget_shutdown_value,
+                 'SetTimeStatus'   : self.list_widget_settime_value
                  }
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:

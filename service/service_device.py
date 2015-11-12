@@ -31,12 +31,12 @@ class config_set_device:
         
         param = web.input()
         if param.has_key('CdromStatus') == False:
-            UrlWhite['ErrStat'] = -1
-            UrlWhite['ErrMsg'] = u'缺少参数 param:CdromStatus=status'
+            ConfigData['ErrStat'] = -1
+            ConfigData['ErrMsg'] = u'缺少参数 param:CdromStatus=status'
             return render.config(json.dumps(ConfigData))
         if param.has_key('UsbStatus') == False:
-            UrlWhite['ErrStat'] = -1
-            UrlWhite['ErrMsg'] = u'缺少参数 param:UsbStatus=status'
+            ConfigData['ErrStat'] = -1
+            ConfigData['ErrMsg'] = u'缺少参数 param:UsbStatus=status'
             return render.config(json.dumps(ConfigData))
         
         try:
