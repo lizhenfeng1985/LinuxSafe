@@ -12,5 +12,8 @@
     <file>image/top_name.png</file>
     <file>image/bkg_blue.jpg</file>
     <file>image/bkg_white.jpg</file>
+    <file>image/specrc_logo.png</file>
+    <file>image/specrc_settime.png</file>
+    <file>image/specrc_shutdown.png</file>
   </qresource>
 </RCC>

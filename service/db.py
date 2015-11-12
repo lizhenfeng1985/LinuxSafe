@@ -207,6 +207,38 @@ def ConfigSetDevice(device_cdrom, device_usb):
     ret = SqlExecute(sql)
     return ret
 
+# Cnfig查询Specrc特殊资源
+def ConfigGetSpecrc():
+    retList = {
+         'ErrStat' : 0,
+         'ErrMsg'  : 'OK',
+         'Config'  : {},
+    }
+    
+    # 查询
+    sql = 'select specrc_shutdown, specrc_time from config where id == 1'
+    ret = SqlQuery(sql)
+    if ret[0] != 0:
+        retList['ErrStat'] = ret[0]
+        retList['ErrMsg'] = ret[1]
+        return retList
+
+    if len(ret[2]) != 1:
+        retList['ErrStat'] = -1
+        retList['ErrMsg'] = u'Failed: 查询config_specrc失败'
+        return retList
+
+    retList['Config']['ShutDownStatus'] = ret[2][0][0]
+    retList['Config']['SetTimeStatus']  = ret[2][0][1]
+    return retList
+
+# Cnfig设置Specrc特殊资源
+def ConfigSetSpecrc(specrc_shutdown, specrc_settime):    
+    # 更新
+    sql = 'update config set specrc_shutdown = %d, specrc_time = %d where id == 1' % (specrc_shutdown, specrc_settime)
+    ret = SqlExecute(sql)
+    return ret
+
 def CreateTb_Url():
     global GCUR
     global GDEBUG
@@ -228,14 +260,16 @@ def CreateTb_Url():
 	url_white integer,
 	url_black integer,
 	device_cdrom integer,
-	device_usb integer
+	device_usb integer,
+	specrc_shutdown integer,
+	specrc_time integer
     );'''
     ret = SqlExecute(sql)
     if ret[0] != 0 :
         return ret
 
     # 写入默认配置
-    sql = '''insert into config (id, url_white, url_black, device_cdrom, device_usb) values (1, 0, 0, 0, 0)'''
+    sql = '''insert into config (id, url_white, url_black, device_cdrom, device_usb, specrc_shutdown, specrc_time) values (1, 0, 0, 0, 0, 0, 0)'''
     ret = SqlExecute(sql)
     if ret[0] != 0 :
         return ret

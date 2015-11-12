@@ -173,9 +173,9 @@ class GuiDevice(QtGui.QWidget):
             # 更新数据
             self.list_widget_cdrom_text.setText(_fromUtf8("已应用到服务器"))
             self.list_widget_usb_text.setText(_fromUtf8("已应用到服务器"))
-            #QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
+            #QtGui.QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
         else:
-            QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
+            QtGui.QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
 
     def DeviceSetStatus(self):
         url = "http://127.0.0.1:8080/config/getdevice"
@@ -194,7 +194,7 @@ class GuiDevice(QtGui.QWidget):
                 self.list_widget_usb_onoff.setStyleSheet(_fromUtf8("border-image: url(:/image/btn_on.png);"))
             else:
                 self.list_widget_usb_onoff.setStyleSheet(_fromUtf8("border-image: url(:/image/btn_off.png);"))
-            #QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
+            #QtGui.QMessageBox.about(self, u"设置", u"设置:" + "white=%d" % (chkw) + "  black=%d" % (chkb))
         else:
-            QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
+            QtGui.QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
         

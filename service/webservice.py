@@ -6,9 +6,11 @@ import json
 import event_srv
 import event_url
 import event_device
+import event_specrc
 import threading
 from service_url import *
 from service_device import *
+from service_specrc import *
 
 
 render = web.template.render('templates/')
@@ -25,6 +27,8 @@ urls = (
     '/config/set',        'config_set',
     '/config/getdevice',  'config_get_device',
     '/config/setdevice',  'config_set_device',
+    '/config/getspecrc',  'config_get_specrc',
+    '/config/setspecrc',  'config_set_specrc',
 )
 
 
@@ -74,6 +78,17 @@ def InitDevice():
     event_device.DeviceSetStat(ret['Config']['CdromStatus'], ret['Config']['UsbStatus'])
     return 0
 
+# 初始化特殊资源
+def InitSpecrc():
+    # 配置
+    ret = db.ConfigGetSpecrc()
+    if ret['ErrStat'] != 0:
+        print ret['ErrMsg']
+        return ret[0]
+    
+    event_specrc.SpecrcSetStat(ret['Config']['ShutDownStat'], ret['Config']['SetTimeStatus'])
+    return 0
+
 if __name__ == "__main__":
     if db.Connect() != 0 :
         sys.exit()
@@ -83,6 +98,9 @@ if __name__ == "__main__":
 
     # 初始化Device
     InitDevice()
+
+    # 初始化Specrc
+    InitSpecrc()
 
     # 启动消息处理服务
     server = event_srv.EpollServer(host="localhost", port=7000)
