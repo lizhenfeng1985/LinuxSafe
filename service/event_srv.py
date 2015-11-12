@@ -61,7 +61,7 @@ def FilterMsg(msg):
                                 ret = [0, forbid]
                         print ret
                 else:
-                        print '[%d][%s]' % (op_type, sub_proc)
+                        print op_type, op_type, sub_pro, obj_src, obj_dst
 	except:
 		print "ERR unpack len = ", len(msg)
 	return ret
