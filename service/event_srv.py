@@ -40,7 +40,7 @@ def FilterMsg(msg):
                                 ret = [0, forbid]
                         print ret
 
-		elif op_type == 63 : # url
+                elif op_type == 63 : # url
                         host = obj_src
                         uri  = obj_dst
                         print '[URL][type=%d][sub=%s][sip_dip=%s][url=%s]' % (op_type, sub_pro, sip_dip, host + uri)
