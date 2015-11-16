@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from PyQt4.QtGui import *  
 from PyQt4.QtCore import *  
-import sys  
+import sys
 import main
 import urlpage
 import http
@@ -93,8 +93,9 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_sp
         else:
             QMessageBox.about(self, u"获取配置信息", u"获取配置信息:" + ret['ErrMsg'])
             return -1
-        
-app=QApplication(sys.argv)  
-win=GuiMain()
-win.show()
-app.exec_()  
+
+if __name__ == "__main__":
+    app=QApplication(sys.argv)
+    win=GuiMain()
+    win.show()
+    app.exec_()

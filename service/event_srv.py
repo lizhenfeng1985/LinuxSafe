@@ -79,6 +79,7 @@ class EpollServer(object):
 		print 'Started Epoll Server on [%s:%d]' % (host, port)
 		self.epoll = select.epoll()
 		self.epoll.register(self.sock.fileno(), select.EPOLLIN)
+		self.exit = False
 
 	def run(self):
 		'''Executes epoll server operation'''
@@ -88,6 +89,8 @@ class EpollServer(object):
 			requests    = {}
 			responses   = {}
 			while True:
+                                if self.exit == True:
+                                        break
 				events = self.epoll.poll(1)
 				for fileno, event in events:
 					# new connect 

@@ -8,10 +8,15 @@ import event_url
 import event_device
 import event_specrc
 import threading
+import signal
+import time
 from service_url import *
 from service_device import *
 from service_specrc import *
 
+global GEVENT_SERVICE    # 消息处理服务句柄 - 用来做Ctrl+C退出消息设定
+global GEXIT_FLAG
+GEXIT_FLAG = False
 
 render = web.template.render('templates/')
 
@@ -30,7 +35,6 @@ urls = (
     '/config/getspecrc',  'config_get_specrc',
     '/config/setspecrc',  'config_set_specrc',
 )
-
 
 app = web.application(urls, globals())
 
@@ -89,7 +93,18 @@ def InitSpecrc():
     event_specrc.SpecrcSetStat(ret['Config']['ShutDownStatus'], ret['Config']['SetTimeStatus'])
     return 0
 
+# 退出信号处理
+def SignalHandle(signum, frame):
+    global GEVENT_SERVICE
+    global GEXIT_FLAG
+
+    if signum == signal.SIGINT:
+        GEXIT_FLAG = True
+        GEVENT_SERVICE.exit = True
+    
 if __name__ == "__main__":
+    global GEVENT_SERVICE
+    
     if db.Connect() != 0 :
         sys.exit()
 
@@ -102,9 +117,27 @@ if __name__ == "__main__":
     # 初始化Specrc
     InitSpecrc()
 
-    # 启动消息处理服务
-    server = event_srv.EpollServer(host="localhost", port=7000)
-    t_event = threading.Thread(target=server.run, args=())
-    t_event.start()
+    # 响应Ctrl+C信号
+    signal.signal(signal.SIGTERM, SignalHandle)
+    signal.signal(signal.SIGINT, SignalHandle)
     
-    app.run()
+    # 启动消息处理服务
+    GEVENT_SERVICE = event_srv.EpollServer(host="localhost", port=7000)
+    t_event = threading.Thread(target=GEVENT_SERVICE.run, args=())
+    t_event.setDaemon(True)
+    t_event.start()
+
+    # 启动web_app服务
+    t_webapp = threading.Thread(target=app.run, args=())
+    t_webapp.setDaemon(True)
+    t_webapp.start()
+
+    # 循环，等待消息退出
+    while 1:
+        if GEXIT_FLAG == True:
+            print '\n\nMain Exit'
+            break
+        time.sleep(1)
+
+        
+    
