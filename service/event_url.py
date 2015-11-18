@@ -9,6 +9,8 @@
 #######################
 
 import threading
+import logdb
+import pwd
 
 # 全局变量
 global GMUTEX_URL      # 线程锁
@@ -60,11 +62,14 @@ def UrlDel(url):
 
 ## 检查URL是否允许访问
 #  返回值 0允许访问 1不允许访问
-def UrlCheck(host, uri):
+def UrlCheck(uid, sub_pid, obj_pid, sub_proc, obj_src, obj_dst, sip_dip):
         global GMUTEX_URL
         global GURLDIC
         global GURLWHITESTAT
         global GURLBLACKSTAT
+
+        host = obj_src
+        uri  = obj_dst
 
         url_all = host + '/*'
         url     = host + uri
@@ -81,16 +86,28 @@ def UrlCheck(host, uri):
 
                         # 其他禁止
                         GMUTEX_URL.release()
+                        sql = 'insert into log (id, type, user, subpid, objpid, subproc, objsrcpath, objdstpath, sipdip, status, perm, time) ' + \
+                                'values(null, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", datetime())' % ('URL-白名单', \
+                                pwd.getpwuid(uid).pw_name, sub_pid, obj_pid, sub_proc, obj_src, obj_dst, sip_dip, '开启', '拦截')
+                        logdb.LogAddOne(sql)
                         return 1
                         
                 if GURLBLACKSTAT == 1: # 黑名单开启
                         if GURLDIC.has_key(url_all):       # 包含hots/*
                                 if GURLDIC[url_all] == 1 : # 类型是黑名单(1)全部禁止
                                         GMUTEX_URL.release()
+                                        sql = 'insert into log (id, type, user, subpid, objpid, subproc, objsrcpath, objdstpath, sipdip, status, perm, time) ' + \
+                                        'values(null, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", datetime())' % ('URL-黑名单', \
+                                        pwd.getpwuid(uid).pw_name, sub_pid, obj_pid, sub_proc, obj_src, obj_dst, sip_dip, '开启', '拦截')
+                                        logdb.LogAddOne(sql)
                                         return 1
                         if GURLDIC.has_key(url):           # 包含hots/uri的禁止
                                 if GURLDIC[url] == 1 :     # 类型是黑名单(1)全部禁止
                                         GMUTEX_URL.release()
+                                        sql = 'insert into log (id, type, user, subpid, objpid, subproc, objsrcpath, objdstpath, sipdip, status, perm, time) ' + \
+                                        'values(null, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", datetime())' % ('URL-黑名单', \
+                                        pwd.getpwuid(uid).pw_name, sub_pid, obj_pid, sub_proc, obj_src, obj_dst, sip_dip, '开启', '拦截')
+                                        logdb.LogAddOne(sql)
                                         return 1
 
                         # 其他放行

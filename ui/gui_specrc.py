@@ -165,7 +165,7 @@ class GuiSpecrc(QtGui.QWidget):
 
             
     def SpecrcOkBtnClick(self):
-        url = "http://127.0.0.1:8080/config/setspecrc"
+        url = "%s/config/setspecrc" % (config.GLB_CFG['SRV_URL'])
         param = {'ShutDownStatus' :  self.list_widget_shutdown_value,
                  'SetTimeStatus'   : self.list_widget_settime_value
                  }
@@ -178,7 +178,7 @@ class GuiSpecrc(QtGui.QWidget):
             QtGui.QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
 
     def SpecrcSetStatus(self):
-        url = "http://127.0.0.1:8080/config/getspecrc"
+        url = "%s/config/getspecrc" % (config.GLB_CFG['SRV_URL'])
         param = {}
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:

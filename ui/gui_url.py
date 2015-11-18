@@ -55,7 +55,7 @@ class GuiUrl(QWidget):
 
     # 白名单 - 填充Url列表
     def SetItemUrlWhite(self, qlistwidget, start, length):
-        url = "http://127.0.0.1:8080/url/white/getlist"
+        url = "%s/url/white/getlist" % (config.GLB_CFG['SRV_URL'])
         param = {'Start' : start, 'Length' : length}
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:
@@ -105,7 +105,7 @@ class GuiUrl(QWidget):
         else:
             pass
 
-        url = "http://127.0.0.1:8080/config/set"
+        url = "%s/config/set" % (config.GLB_CFG['SRV_URL'])
         param = {'WhiteStatus' : bsetw, 'BlackStatus' : bsetb}
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:
@@ -126,7 +126,7 @@ class GuiUrl(QWidget):
         if len(dialog.inputurl) < 1:
             QMessageBox.about(self, u"添加URL", u"添加失败:URL不能为空")
             return
-        url = "http://127.0.0.1:8080/url/white/add"
+        url = "%s/url/white/add" % (config.GLB_CFG['SRV_URL'])
         param = {'Url' : dialog.inputurl}
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:
@@ -149,7 +149,7 @@ class GuiUrl(QWidget):
             if chk == 2: # 状态有0和2
                 dellist.append(self.urlpage.urlpage_white_tableWidget.item(i, 0).text())
                 
-        url = "http://127.0.0.1:8080/url/white/del"
+        url = "%s/url/white/del" % (config.GLB_CFG['SRV_URL'])
         for u in dellist:   
             param = {'Url' : u}
             ret = http.Post(url, param)
@@ -216,7 +216,7 @@ class GuiUrl(QWidget):
     
     # 黑名单 - 填充Url列表
     def SetItemUrlBlack(self, qlistwidget, start, length):
-        url = "http://127.0.0.1:8080/url/black/getlist"
+        url = "%s/url/black/getlist" % (config.GLB_CFG['SRV_URL'])
         param = {'Start' : start, 'Length' : length}
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:
@@ -266,7 +266,7 @@ class GuiUrl(QWidget):
         else:
             pass
             
-        url = "http://127.0.0.1:8080/config/set"
+        url = "%s/config/set" % (config.GLB_CFG['SRV_URL'])
         param = {'WhiteStatus' : bsetw, 'BlackStatus' : bsetb}
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:
@@ -287,8 +287,8 @@ class GuiUrl(QWidget):
         dialog.exec_()
         if len(dialog.inputurl) < 1:
             QMessageBox.about(self, u"添加URL", u"添加失败:URL不能为空")
-            return
-        url = "http://127.0.0.1:8080/url/black/add"
+            return        
+        url = "%s/url/black/add" % (config.GLB_CFG['SRV_URL'])
         param = {'Url' : dialog.inputurl}
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:
@@ -311,7 +311,7 @@ class GuiUrl(QWidget):
             if chk == 2: # 状态有0和2
                 dellist.append(self.urlpage.urlpage_black_tableWidget.item(i, 0).text())
                 
-        url = "http://127.0.0.1:8080/url/black/del"
+        url = "%s/url/black/del" % (config.GLB_CFG['SRV_URL'])
         for u in dellist:   
             param = {'Url' : u}
             ret = http.Post(url, param)

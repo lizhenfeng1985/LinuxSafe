@@ -75,7 +75,7 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_sp
         
     def InitConfig(self):
         # 获取配置信息
-        url = "http://127.0.0.1:8080/config/get"
+        url = "%s/config/get" % (config.GLB_CFG['SRV_URL'])
         ret = http.Post(url, {})
         if ret['ErrStat'] == 0:
             bWhite = ret['Config']['White_Start']

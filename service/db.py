@@ -26,7 +26,7 @@ def Connect():
     except Exception as e:
         print ("[Error] config.get(DataBase, DbName)")
         print (e.message)
-        return None
+        return -1
 
     if os.path.exists(dbname) == False:
         needCreateTb = True
@@ -286,5 +286,5 @@ if __name__ == "__main__":
     UrlDel("www.baidu.com")
     ret = UrlQuery(0, 0, 2)
     print ret
-    if cn != None:    
+    if cn != 0:    
         Close(cn)

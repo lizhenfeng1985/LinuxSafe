@@ -13,11 +13,11 @@ class url_white_getlist:
             'ErrStat' : 0,
             'ErrMsg'  : "OK",
             'Lists'   : [],
-            'Totle'   : 23,
+            'Totle'   : 0,
         }
         
         param = web.input()
-        if param.has_key('Start') == False and param.has_key('Length') == False:
+        if param.has_key('Start') == False or param.has_key('Length') == False:
             UrlWhiteList['ErrStat'] = -1
             UrlWhiteList['ErrMsg'] = u'缺少参数 param:Start=A&Length=B'
             return render.url_white_list(json.dumps(UrlWhiteList))

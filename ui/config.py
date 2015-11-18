@@ -11,5 +11,6 @@ CFG_URL = {
 }
 
 GLB_CFG = {
-    'URL' : CFG_URL,
+    'SRV_URL' : 'http://127.0.0.1:8080',
+    'URL'     : CFG_URL,
 }

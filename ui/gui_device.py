@@ -164,7 +164,7 @@ class GuiDevice(QtGui.QWidget):
             
     
     def DeviceOkBtnClick(self):
-        url = "http://127.0.0.1:8080/config/setdevice"
+        url = "%s/config/setdevice" % (config.GLB_CFG['SRV_URL'])
         param = {'CdromStatus' :  self.list_widget_cdrom_value,
                  'UsbStatus'   : self.list_widget_usb_value
                  }
@@ -178,7 +178,7 @@ class GuiDevice(QtGui.QWidget):
             QtGui.QMessageBox.about(self, u"设置", u"设置失败:" + ret['ErrMsg'])
 
     def DeviceSetStatus(self):
-        url = "http://127.0.0.1:8080/config/getdevice"
+        url = "%s/config/getdevice" % (config.GLB_CFG['SRV_URL'])
         param = {}
         ret = http.Post(url, param)
         if ret['ErrStat'] == 0:
