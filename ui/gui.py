@@ -9,10 +9,11 @@ import config
 import gui_url
 import gui_device
 import gui_specrc
+import gui_log
 
 _encoding = QApplication.UnicodeUTF8
 
-class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_specrc.GuiSpecrc):  
+class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_specrc.GuiSpecrc, gui_log.GuiLog):  
     def __init__(self,parent=None):  
         super(GuiMain,self).__init__(parent)        
         self.setupUi(self)
@@ -39,7 +40,10 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_sp
         self.AddListLeftDevice()
 
         # 特殊资源管理
-        self.AddListLeftSpecrc()        
+        self.AddListLeftSpecrc()
+
+        # 日志
+        self.AddListLeftLog()
 
         # 初始化界面配置
         self.InitConfig()

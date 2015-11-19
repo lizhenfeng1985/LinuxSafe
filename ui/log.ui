@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>651</width>
+    <height>379</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTabWidget" name="log_tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>368</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Tab 1</string>
+    </attribute>
+    <widget class="QTableView" name="url_log_tableView">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>41</y>
+       <width>625</width>
+       <height>271</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="log_url_first_btn">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>318</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>首页</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="log_url_prev_btn">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>318</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>上一页</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="log_url_next_btn">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>318</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>下一页</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="log_url_ok_btn">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>318</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>确定</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="log_url_now_label">
+     <property name="geometry">
+      <rect>
+       <x>172</x>
+       <y>318</y>
+       <width>50</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0000</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="log_url_tot_label">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>318</y>
+       <width>54</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>共1页</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>318</y>
+       <width>32</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>跳到</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="log_url_jump_edit">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>318</y>
+       <width>70</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>7</x>
+       <y>10</y>
+       <width>50</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>开始时间</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>205</x>
+       <y>10</y>
+       <width>54</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>结束时间</string>
+     </property>
+    </widget>
+    <widget class="QDateTimeEdit" name="log_url_start_timeedit">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>10</y>
+       <width>136</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDateTimeEdit" name="log_url_stop_timeedit">
+     <property name="geometry">
+      <rect>
+       <x>255</x>
+       <y>10</y>
+       <width>136</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="log_url_query_edit">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>10</y>
+       <width>160</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="log_url_query_btn">
+     <property name="geometry">
+      <rect>
+       <x>565</x>
+       <y>10</y>
+       <width>60</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>查询</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Tab 2</string>
+    </attribute>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -124,7 +124,7 @@ def LogUrlQuery(start, length, startTime, stopTime, keyWord):
     retList['Totle'] = ret[2][0][0]
     
     # 查询当前条件数据
-    sql = u'select subpid, user, subproc, sipdip, objsrcpath, objdstpath, perm, time from log where type like "URL-%%" and ' + \
+    sql = u'select type, subpid, user, subproc, sipdip, objsrcpath, objdstpath, perm, time from log where type like "URL-%%" and ' + \
           u'time >= "%s" and ' % (startTime) + \
           u'time <= "%s" and ' % (stopTime) + \
           u'( type like "%%%s%%" or ' % (keyWord) + \
@@ -144,14 +144,15 @@ def LogUrlQuery(start, length, startTime, stopTime, keyWord):
 
     for u in ret[2]:
         lst = {
-            'Pid'     : u[0],
-            'User'    : u[1],
-            'Subproc' : u[2],
-            'Sipdip'  : u[3],
-            'Host'    : u[4],
-            'Uri'     : u[5],
-            'Perm'    : u[6],
-            'Time'    : u[7],
+            'Type'    : u[0],
+            'Pid'     : u[1],
+            'User'    : u[2],
+            'Subproc' : u[3],
+            'Sipdip'  : u[4],
+            'Host'    : u[5],
+            'Uri'     : u[6],
+            'Perm'    : u[7],
+            'Time'    : u[8],
         }
         retList['Lists'].append(lst)
     return retList
