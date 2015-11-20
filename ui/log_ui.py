@@ -30,8 +30,8 @@ class LogPage(QtGui.QWidget):
 
         # 变量定义
         t = time.localtime()
-        self.log_url_start_time = "%04d-%2d-%02d 00:00:00" % (t.tm_year, t.tm_mon, t.tm_mday)
-        self.log_url_stop_time  = "%04d-%2d-%02d 23:59:59" % (t.tm_year, t.tm_mon, t.tm_mday)
+        self.log_url_start_time = "%04d-%02d-%02d 00:00:00" % (t.tm_year, t.tm_mon, t.tm_mday)
+        self.log_url_stop_time  = "%04d-%02d-%02d 23:59:59" % (t.tm_year, t.tm_mon, t.tm_mday)
         self.log_url_quert_word = ""
         self.log_url_now_page   = 1
         self.log_url_tot_page   = 1     
