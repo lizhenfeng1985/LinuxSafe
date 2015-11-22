@@ -184,7 +184,7 @@ def LogSpecrcQuery(start, length, startTime, stopTime, keyWord):
     retList['Totle'] = ret[2][0][0]
     
     # 查询当前条件数据
-    sql = u'select subpid, user, subproc, objsrcpath, perm, time from log where type like "特殊资源-%%" and ' + \
+    sql = u'select type, subpid, user, subproc, objsrcpath, perm, time from log where type like "特殊资源-%%" and ' + \
           u'time >= "%s" and ' % (startTime) + \
           u'time <= "%s" and ' % (stopTime) + \
           u'( type like "%%%s%%" or ' % (keyWord) + \
@@ -202,12 +202,13 @@ def LogSpecrcQuery(start, length, startTime, stopTime, keyWord):
 
     for u in ret[2]:
         lst = {
-            'Pid'     : u[0],
-            'User'    : u[1],
-            'Subproc' : u[2],
-            'ObjSrc'  : u[3],
-            'Perm'    : u[4],
-            'Time'    : u[5],
+            'Type'    : u[0],
+            'Pid'     : u[1],
+            'User'    : u[2],
+            'Subproc' : u[3],
+            'ObjSrc'  : u[4],
+            'Perm'    : u[5],
+            'Time'    : u[6],
         }
         retList['Lists'].append(lst)
     return retList
@@ -240,7 +241,7 @@ def LogDeviceQuery(start, length, startTime, stopTime, keyWord):
     retList['Totle'] = ret[2][0][0]
     
     # 查询当前条件数据
-    sql = u'select subpid, user, subproc, objsrcpath, perm, time from log where type like "外设管理-%%" and ' + \
+    sql = u'select type, subpid, user, subproc, objsrcpath, perm, time from log where type like "外设管理-%%" and ' + \
           u'time >= "%s" and ' % (startTime) + \
           u'time <= "%s" and ' % (stopTime) + \
           u'( type like "%%%s%%" or ' % (keyWord) + \
@@ -258,12 +259,13 @@ def LogDeviceQuery(start, length, startTime, stopTime, keyWord):
 
     for u in ret[2]:
         lst = {
-            'Pid'     : u[0],
-            'User'    : u[1],
-            'Subproc' : u[2],
-            'ObjSrc'  : u[3],
-            'Perm'    : u[4],
-            'Time'    : u[5],
+            'Type'    : u[0],
+            'Pid'     : u[1],
+            'User'    : u[2],
+            'Subproc' : u[3],
+            'ObjSrc'  : u[4],
+            'Perm'    : u[5],
+            'Time'    : u[6],
         }
         retList['Lists'].append(lst)
     return retList

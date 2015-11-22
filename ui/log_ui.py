@@ -32,9 +32,18 @@ class LogPage(QtGui.QWidget):
         t = time.localtime()
         self.log_url_start_time = "%04d-%02d-%02d 00:00:00" % (t.tm_year, t.tm_mon, t.tm_mday)
         self.log_url_stop_time  = "%04d-%02d-%02d 23:59:59" % (t.tm_year, t.tm_mon, t.tm_mday)
-        self.log_url_quert_word = ""
         self.log_url_now_page   = 1
-        self.log_url_tot_page   = 1     
+        self.log_url_tot_page   = 1
+
+        self.log_device_start_time = "%04d-%02d-%02d 00:00:00" % (t.tm_year, t.tm_mon, t.tm_mday)
+        self.log_device_stop_time  = "%04d-%02d-%02d 23:59:59" % (t.tm_year, t.tm_mon, t.tm_mday)
+        self.log_device_now_page   = 1
+        self.log_device_tot_page   = 1
+
+        self.log_specrc_start_time = "%04d-%02d-%02d 00:00:00" % (t.tm_year, t.tm_mon, t.tm_mday)
+        self.log_specrc_stop_time  = "%04d-%02d-%02d 23:59:59" % (t.tm_year, t.tm_mon, t.tm_mday)
+        self.log_specrc_now_page   = 1
+        self.log_specrc_tot_page   = 1
         
         # 创建标签页
         self.log_tabWidget = QtGui.QTabWidget()
@@ -187,13 +196,275 @@ class LogPage(QtGui.QWidget):
         self.log_tabWidget.addTab(self.url_tab, _fromUtf8("URL过滤"))
 
     def addDeviceLogTab(self):
+        # 第二个标签页
         self.device_tab = QtGui.QWidget()
-        self.device_tab.setObjectName(_fromUtf8("device_tab"))
+        self.device_tab.setObjectName(_fromUtf8("device_tab"))        
+        
+        # 日志列表框
+        self.device_log_tableWidget = QtGui.QTableWidget(self.device_tab)
+        self.device_log_tableWidget.setGeometry(QtCore.QRect(5, 41, 625, 271))
+        self.device_log_tableWidget.setObjectName(_fromUtf8("device_log_tableWidget"))
+
+        self.device_log_tableWidget.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.device_log_tableWidget.verticalHeader().setVisible(False)
+        self.device_log_tableWidget.setEditTriggers(QtGui.QTableWidget.NoEditTriggers)
+        self.device_log_tableWidget.setAlternatingRowColors(True)
+        self.device_log_tableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.device_log_tableWidget.setRowCount(10)
+        self.device_log_tableWidget.setColumnCount(7)
+        self.device_log_tableWidget.setHorizontalHeaderLabels([_fromUtf8("类型"),_fromUtf8("PID"),_fromUtf8("用户"),_fromUtf8("进程"),_fromUtf8("路径"),_fromUtf8("结果"),_fromUtf8("时间")])
+        self.device_log_tableWidget.setShowGrid(False)
+        #self.device_log_tableWidget.setColumnWidth(0,568)
+        self.device_log_tableWidget.setColumnWidth(0,80)
+        self.device_log_tableWidget.setColumnWidth(1,80)
+        self.device_log_tableWidget.setColumnWidth(2,80)
+        self.device_log_tableWidget.setColumnWidth(3,80)
+        self.device_log_tableWidget.setColumnWidth(4,80)
+        self.device_log_tableWidget.setColumnWidth(5,80)
+        self.device_log_tableWidget.setColumnWidth(6,80)
+        
+        # 循环添加
+        for i in range(0, 10):
+            self.device_log_tableWidget.setRowHeight(i,21)
+
+        # 日志 - 首页
+        self.log_device_first_btn = QtGui.QPushButton(self.device_tab)
+        self.log_device_first_btn.setGeometry(QtCore.QRect(10, 315, 75, 23))
+        self.log_device_first_btn.setObjectName(_fromUtf8("log_device_first_btn"))
+        self.log_device_first_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_device_first_btn.setText(_fromUtf8("首页"))
+        
+        # 日志 - 上一页
+        self.log_device_prev_btn = QtGui.QPushButton(self.device_tab)
+        self.log_device_prev_btn.setGeometry(QtCore.QRect(90, 315, 75, 23))
+        self.log_device_prev_btn.setObjectName(_fromUtf8("log_device_prev_btn"))
+        self.log_device_prev_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_device_prev_btn.setText(_fromUtf8("上一页"))
+                
+        # 日志 - 下一页
+        self.log_device_next_btn = QtGui.QPushButton(self.device_tab)
+        self.log_device_next_btn.setGeometry(QtCore.QRect(230, 315, 75, 23))
+        self.log_device_next_btn.setObjectName(_fromUtf8("log_device_next_btn"))
+        self.log_device_next_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_device_next_btn.setText(_fromUtf8("下一页"))
+        
+        # 日志 - 确定跳转
+        self.log_device_ok_btn = QtGui.QPushButton(self.device_tab)
+        self.log_device_ok_btn.setGeometry(QtCore.QRect(540, 315, 75, 23))
+        self.log_device_ok_btn.setObjectName(_fromUtf8("log_device_ok_btn"))
+        self.log_device_ok_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_device_ok_btn.setText(_fromUtf8("确定"))
+
+        # 日志 - 当前页码
+        self.log_device_now_label = QtGui.QLabel(self.device_tab)
+        self.log_device_now_label.setGeometry(QtCore.QRect(172, 315, 50, 23))
+        self.log_device_now_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.log_device_now_label.setObjectName(_fromUtf8("log_device_now_label"))
+        self.log_device_now_label.setText(_fromUtf8("0"))
+        
+        # 日志 - 总页码        
+        self.log_device_tot_label = QtGui.QLabel(self.device_tab)
+        self.log_device_tot_label.setGeometry(QtCore.QRect(340, 315, 54, 23))
+        self.log_device_tot_label.setObjectName(_fromUtf8("log_device_tot_label"))        
+        self.log_device_tot_label.setText(_fromUtf8("共1页"))
+        self.log_device_tot_label.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        
+        # 日志 - 文字 - 跳到
+        self.label_3 = QtGui.QLabel(self.device_tab)
+        self.label_3.setGeometry(QtCore.QRect(420, 315, 32, 23))
+        self.label_3.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.label_3.setText(_fromUtf8("跳到"))        
+
+        # 日志 - 跳转- 输入页码框
+        self.log_device_jump_edit = QtGui.QLineEdit(self.device_tab)
+        self.log_device_jump_edit.setGeometry(QtCore.QRect(460, 315, 70, 23))
+        self.log_device_jump_edit.setAlignment(QtCore.Qt.AlignCenter)
+        self.log_device_jump_edit.setObjectName(_fromUtf8("log_device_jump_edit"))
+        self.log_device_jump_edit.setText(_fromUtf8("0"))
+        self.log_device_jump_edit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+
+        # 日志 - 开始时间 - 文字
+        self.label = QtGui.QLabel(self.device_tab)
+        self.label.setGeometry(QtCore.QRect(7, 10, 50, 23))
+        self.label.setObjectName(_fromUtf8("label"))
+        self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label.setText(_fromUtf8("开始时间"))
+        self.label.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+
+        # 日志 - 结束时间 - 文字
+        self.label_2 = QtGui.QLabel(self.device_tab)
+        self.label_2.setGeometry(QtCore.QRect(214, 10, 54, 23))
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.label_2.setText(_fromUtf8("结束时间"))
+        self.label_2.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+
+        # 日志 - 开始时间 - 时间控件
+        self.log_device_start_timeedit = QtGui.QDateTimeEdit(self.device_tab)
+        self.log_device_start_timeedit.setGeometry(QtCore.QRect(60, 10, 145, 23))
+        self.log_device_start_timeedit.setObjectName(_fromUtf8("log_device_start_timeedit"))
+        self.log_device_start_timeedit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_device_start_timeedit.setDateTime(QtCore.QDateTime.fromString(self.log_device_start_time, 'yyyy-MM-dd hh:mm:ss'))
+
+        # 日志 - 结束时间 - 时间控件
+        self.log_device_stop_timeedit = QtGui.QDateTimeEdit(self.device_tab)
+        self.log_device_stop_timeedit.setGeometry(QtCore.QRect(263, 10, 145, 23))
+        self.log_device_stop_timeedit.setObjectName(_fromUtf8("log_device_stop_timeedit"))
+        self.log_device_stop_timeedit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_device_stop_timeedit.setDateTime(QtCore.QDateTime.fromString(self.log_device_stop_time, 'yyyy-MM-dd hh:mm:ss'))
+
+        # 日志 - 模糊查询 - 输入框
+        self.log_device_query_edit = QtGui.QLineEdit(self.device_tab)
+        self.log_device_query_edit.setGeometry(QtCore.QRect(418, 10, 142, 23))
+        self.log_device_query_edit.setObjectName(_fromUtf8("log_device_query_edit"))
+        self.log_device_query_edit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_device_query_edit.setText(_fromUtf8(""))
+        
+
+        # 日志 - 查询 - 按纽
+        self.log_device_query_btn = QtGui.QPushButton(self.device_tab)
+        self.log_device_query_btn.setGeometry(QtCore.QRect(565, 10, 60, 23))
+        self.log_device_query_btn.setObjectName(_fromUtf8("log_device_query_btn"))
+        self.log_device_query_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_device_query_btn.setText(_fromUtf8("查询"))
+        
+        # 添加url到标签
         self.log_tabWidget.addTab(self.device_tab, _fromUtf8("外设管理"))
 
     def addSpecrcLogTab(self):
+        # 第二个标签页
         self.specrc_tab = QtGui.QWidget()
         self.specrc_tab.setObjectName(_fromUtf8("specrc_tab"))
+        
+        # 日志列表框
+        self.specrc_log_tableWidget = QtGui.QTableWidget(self.specrc_tab)
+        self.specrc_log_tableWidget.setGeometry(QtCore.QRect(5, 41, 625, 271))
+        self.specrc_log_tableWidget.setObjectName(_fromUtf8("specrc_log_tableWidget"))
+
+        self.specrc_log_tableWidget.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.specrc_log_tableWidget.verticalHeader().setVisible(False)
+        self.specrc_log_tableWidget.setEditTriggers(QtGui.QTableWidget.NoEditTriggers)
+        self.specrc_log_tableWidget.setAlternatingRowColors(True)
+        self.specrc_log_tableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.specrc_log_tableWidget.setRowCount(10)
+        self.specrc_log_tableWidget.setColumnCount(7)
+        self.specrc_log_tableWidget.setHorizontalHeaderLabels([_fromUtf8("类型"),_fromUtf8("PID"),_fromUtf8("用户"),_fromUtf8("进程"),_fromUtf8("操作对象"),_fromUtf8("结果"),_fromUtf8("时间")])
+        self.specrc_log_tableWidget.setShowGrid(False)
+        #self.specrc_log_tableWidget.setColumnWidth(0,568)
+        self.specrc_log_tableWidget.setColumnWidth(0,80)
+        self.specrc_log_tableWidget.setColumnWidth(1,80)
+        self.specrc_log_tableWidget.setColumnWidth(2,80)
+        self.specrc_log_tableWidget.setColumnWidth(3,80)
+        self.specrc_log_tableWidget.setColumnWidth(4,80)
+        self.specrc_log_tableWidget.setColumnWidth(5,80)
+        self.specrc_log_tableWidget.setColumnWidth(6,80)
+        
+        # 循环添加
+        for i in range(0, 10):
+            self.specrc_log_tableWidget.setRowHeight(i,21)
+
+        # 日志 - 首页
+        self.log_specrc_first_btn = QtGui.QPushButton(self.specrc_tab)
+        self.log_specrc_first_btn.setGeometry(QtCore.QRect(10, 315, 75, 23))
+        self.log_specrc_first_btn.setObjectName(_fromUtf8("log_specrc_first_btn"))
+        self.log_specrc_first_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_specrc_first_btn.setText(_fromUtf8("首页"))
+        
+        # 日志 - 上一页
+        self.log_specrc_prev_btn = QtGui.QPushButton(self.specrc_tab)
+        self.log_specrc_prev_btn.setGeometry(QtCore.QRect(90, 315, 75, 23))
+        self.log_specrc_prev_btn.setObjectName(_fromUtf8("log_specrc_prev_btn"))
+        self.log_specrc_prev_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_specrc_prev_btn.setText(_fromUtf8("上一页"))
+                
+        # 日志 - 下一页
+        self.log_specrc_next_btn = QtGui.QPushButton(self.specrc_tab)
+        self.log_specrc_next_btn.setGeometry(QtCore.QRect(230, 315, 75, 23))
+        self.log_specrc_next_btn.setObjectName(_fromUtf8("log_specrc_next_btn"))
+        self.log_specrc_next_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_specrc_next_btn.setText(_fromUtf8("下一页"))
+        
+        # 日志 - 确定跳转
+        self.log_specrc_ok_btn = QtGui.QPushButton(self.specrc_tab)
+        self.log_specrc_ok_btn.setGeometry(QtCore.QRect(540, 315, 75, 23))
+        self.log_specrc_ok_btn.setObjectName(_fromUtf8("log_specrc_ok_btn"))
+        self.log_specrc_ok_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_specrc_ok_btn.setText(_fromUtf8("确定"))
+
+        # 日志 - 当前页码
+        self.log_specrc_now_label = QtGui.QLabel(self.specrc_tab)
+        self.log_specrc_now_label.setGeometry(QtCore.QRect(172, 315, 50, 23))
+        self.log_specrc_now_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.log_specrc_now_label.setObjectName(_fromUtf8("log_specrc_now_label"))
+        self.log_specrc_now_label.setText(_fromUtf8("0"))
+        
+        # 日志 - 总页码        
+        self.log_specrc_tot_label = QtGui.QLabel(self.specrc_tab)
+        self.log_specrc_tot_label.setGeometry(QtCore.QRect(340, 315, 54, 23))
+        self.log_specrc_tot_label.setObjectName(_fromUtf8("log_specrc_tot_label"))        
+        self.log_specrc_tot_label.setText(_fromUtf8("共1页"))
+        self.log_specrc_tot_label.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        
+        # 日志 - 文字 - 跳到
+        self.label_3 = QtGui.QLabel(self.specrc_tab)
+        self.label_3.setGeometry(QtCore.QRect(420, 315, 32, 23))
+        self.label_3.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.label_3.setText(_fromUtf8("跳到"))        
+
+        # 日志 - 跳转- 输入页码框
+        self.log_specrc_jump_edit = QtGui.QLineEdit(self.specrc_tab)
+        self.log_specrc_jump_edit.setGeometry(QtCore.QRect(460, 315, 70, 23))
+        self.log_specrc_jump_edit.setAlignment(QtCore.Qt.AlignCenter)
+        self.log_specrc_jump_edit.setObjectName(_fromUtf8("log_specrc_jump_edit"))
+        self.log_specrc_jump_edit.setText(_fromUtf8("0"))
+        self.log_specrc_jump_edit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+
+        # 日志 - 开始时间 - 文字
+        self.label = QtGui.QLabel(self.specrc_tab)
+        self.label.setGeometry(QtCore.QRect(7, 10, 50, 23))
+        self.label.setObjectName(_fromUtf8("label"))
+        self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label.setText(_fromUtf8("开始时间"))
+        self.label.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+
+        # 日志 - 结束时间 - 文字
+        self.label_2 = QtGui.QLabel(self.specrc_tab)
+        self.label_2.setGeometry(QtCore.QRect(214, 10, 54, 23))
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.label_2.setText(_fromUtf8("结束时间"))
+        self.label_2.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+
+        # 日志 - 开始时间 - 时间控件
+        self.log_specrc_start_timeedit = QtGui.QDateTimeEdit(self.specrc_tab)
+        self.log_specrc_start_timeedit.setGeometry(QtCore.QRect(60, 10, 145, 23))
+        self.log_specrc_start_timeedit.setObjectName(_fromUtf8("log_specrc_start_timeedit"))
+        self.log_specrc_start_timeedit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_specrc_start_timeedit.setDateTime(QtCore.QDateTime.fromString(self.log_specrc_start_time, 'yyyy-MM-dd hh:mm:ss'))
+
+        # 日志 - 结束时间 - 时间控件
+        self.log_specrc_stop_timeedit = QtGui.QDateTimeEdit(self.specrc_tab)
+        self.log_specrc_stop_timeedit.setGeometry(QtCore.QRect(263, 10, 145, 23))
+        self.log_specrc_stop_timeedit.setObjectName(_fromUtf8("log_specrc_stop_timeedit"))
+        self.log_specrc_stop_timeedit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_specrc_stop_timeedit.setDateTime(QtCore.QDateTime.fromString(self.log_specrc_stop_time, 'yyyy-MM-dd hh:mm:ss'))
+
+        # 日志 - 模糊查询 - 输入框
+        self.log_specrc_query_edit = QtGui.QLineEdit(self.specrc_tab)
+        self.log_specrc_query_edit.setGeometry(QtCore.QRect(418, 10, 142, 23))
+        self.log_specrc_query_edit.setObjectName(_fromUtf8("log_specrc_query_edit"))
+        self.log_specrc_query_edit.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_specrc_query_edit.setText(_fromUtf8(""))
+        
+
+        # 日志 - 查询 - 按纽
+        self.log_specrc_query_btn = QtGui.QPushButton(self.specrc_tab)
+        self.log_specrc_query_btn.setGeometry(QtCore.QRect(565, 10, 60, 23))
+        self.log_specrc_query_btn.setObjectName(_fromUtf8("log_specrc_query_btn"))
+        self.log_specrc_query_btn.setStyleSheet(_fromUtf8("border-image: url(:/image/bkg_btn.jpg);"))
+        self.log_specrc_query_btn.setText(_fromUtf8("查询"))
+        
+        # 添加url到标签
         self.log_tabWidget.addTab(self.specrc_tab, _fromUtf8("特殊资源"))
 
 import image_rc
