@@ -2,8 +2,8 @@
 from PyQt4.QtGui import *  
 from PyQt4.QtCore import *  
 import sys  
-import main
-import urlpage
+import ui_main
+import ui_urlpage
 import http
 import config
 
@@ -18,7 +18,7 @@ class GuiUrl(QWidget):
         self.urlpage_wdg = QTabWidget()        
         self.urlpage_wdg.setObjectName(u"urlpage")
 
-        self.urlpage = urlpage.UrlPage()
+        self.urlpage = ui_urlpage.UrlPage()
         self.urlpage_wdg.addTab(self.urlpage.tbwhite, u"白名单")
         self.urlpage_wdg.addTab(self.urlpage.tbblack, u"黑名单")
 

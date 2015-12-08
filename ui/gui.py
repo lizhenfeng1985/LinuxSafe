@@ -2,18 +2,19 @@
 from PyQt4.QtGui import *  
 from PyQt4.QtCore import *  
 import sys
-import main
-import urlpage
+import ui_main
+import ui_urlpage
 import http
 import config
 import gui_url
 import gui_device
 import gui_specrc
+import gui_port
 import gui_log
 
 _encoding = QApplication.UnicodeUTF8
 
-class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_specrc.GuiSpecrc, gui_log.GuiLog):  
+class GuiMain(QDialog,ui_main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_specrc.GuiSpecrc, gui_log.GuiLog, gui_port.GuiPort):  
     def __init__(self,parent=None):  
         super(GuiMain,self).__init__(parent)        
         self.setupUi(self)
@@ -42,6 +43,9 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_sp
         # 特殊资源管理
         self.AddListLeftSpecrc()
 
+        # 端口管理
+        self.AddListLeftPort()
+        
         # 日志
         self.AddListLeftLog()
 
@@ -58,7 +62,8 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_sp
         self.listWidget_left.insertItem(0, QListWidgetItem(u"    Url过滤"))
         self.listWidget_left.insertItem(1, QListWidgetItem(u"    外设管理"))        
         self.listWidget_left.insertItem(2, QListWidgetItem(u"    特殊资源"))
-        self.listWidget_left.insertItem(3, QListWidgetItem(u"    防护日志"))
+        self.listWidget_left.insertItem(3, QListWidgetItem(u"    端口管理"))
+        self.listWidget_left.insertItem(4, QListWidgetItem(u"    防护日志"))
         #self.listWidget_left.insertItem(1, QListWidgetItem(u"    防火墙"))
         #self.listWidget_left.insertItem(2, QListWidgetItem(u"    外设管理"))
         #self.listWidget_left.insertItem(4, QListWidgetItem(u"    可信运行"))
@@ -75,7 +80,7 @@ class GuiMain(QDialog,main.Ui_Form, gui_url.GuiUrl, gui_device.GuiDevice, gui_sp
         #QMessageBox.about(self, Item.text(), Item.text())
 
     def SetVersionBottom(self, version):
-        self.label_bottom_version.setText(main._translate("Form", "版本 : " + version, None))
+        self.label_bottom_version.setText(ui_main._translate("Form", "版本 : " + version, None))
         
     def InitConfig(self):
         # 获取配置信息

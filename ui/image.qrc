@@ -15,5 +15,6 @@
     <file>image/specrc_logo.png</file>
     <file>image/specrc_settime.png</file>
     <file>image/specrc_shutdown.png</file>
+    <file>image/port_list.png</file>
   </qresource>
 </RCC>

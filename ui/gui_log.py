@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from PyQt4.QtGui import *  
 from PyQt4.QtCore import *  
-import sys  
-import main
-import log_ui
+import sys 
+import ui_log
 import http
 import config
 
@@ -15,7 +14,7 @@ class GuiLog(QWidget):
         self.setupUi(self)
         
     def AddListLeftLog(self):
-        self.log_page = log_ui.LogPage()
+        self.log_page = ui_log.LogPage()
         self.frame_mid_right.addWidget(self.log_page.log_tabWidget)        
         self.connect(self.listWidget_left,SIGNAL("currentRowChanged(int)"),self.frame_mid_right,SLOT("setCurrentIndex(int)"))
 

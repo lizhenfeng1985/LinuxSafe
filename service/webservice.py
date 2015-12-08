@@ -15,6 +15,7 @@ from service_url import *
 from service_device import *
 from service_specrc import *
 from service_log import *
+from service_port import *
 
 global GEVENT_SERVICE    # 消息处理服务句柄 - 用来做Ctrl+C退出消息设定
 global GEXIT_FLAG
@@ -32,10 +33,15 @@ urls = (
     '/url/black/del',     'url_black_del',
     '/config/get',        'config_get',
     '/config/set',        'config_set',
+    
     '/config/getdevice',  'config_get_device',
     '/config/setdevice',  'config_set_device',
+    
     '/config/getspecrc',  'config_get_specrc',
     '/config/setspecrc',  'config_set_specrc',
+    
+    '/port/list/query',   'port_list_query',
+    
     '/log/url/query',     'log_url_query',
     '/log/device/query',  'log_device_query',
     '/log/specrc/query',  'log_specrc_query',

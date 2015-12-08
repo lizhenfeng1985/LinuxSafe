@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>651</width>
+    <height>379</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTabWidget" name="log_tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>368</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Tab 1</string>
+    </attribute>
+    <widget class="QTableView" name="port_list_tableView">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>41</y>
+       <width>625</width>
+       <height>271</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="port_list_first_btn">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>318</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>首页</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="port_list_prev_btn">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>318</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>上一页</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="port_list_next_btn">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>318</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>下一页</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="port_list_ok_btn">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>318</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>确定</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="port_list_now_label">
+     <property name="geometry">
+      <rect>
+       <x>172</x>
+       <y>318</y>
+       <width>50</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0000</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="port_list_tot_label">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>318</y>
+       <width>54</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>共1页</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>318</y>
+       <width>32</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>跳到</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="port_list_jump_edit">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>318</y>
+       <width>70</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="port_list_query_btn">
+     <property name="geometry">
+      <rect>
+       <x>565</x>
+       <y>10</y>
+       <width>60</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>查询</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>28</x>
+       <y>6</y>
+       <width>200</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Tab 2</string>
+    </attribute>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
